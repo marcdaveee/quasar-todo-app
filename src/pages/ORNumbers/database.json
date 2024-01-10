@@ -1,0 +1,44 @@
+{
+  "orNumbers": [
+    {
+      "form_type": "Police Clearance",
+      "fund_type": "General Fund",
+      "from": 10,
+      "to": 29,
+      "quantity": 10,
+      "used": 0
+    },
+    {
+      "form_type": "Business Permit",
+      "fund_type": "Special Fund",
+      "from": 30,
+      "to": 49,
+      "quantity": 20,
+      "used": 5
+    },
+    {
+      "form_type": "Building Permit",
+      "fund_type": "General Fund",
+      "from": 50,
+      "to": 69,
+      "quantity": 20,
+      "used": 10
+    },
+    {
+      "form_type": "Driver's License",
+      "fund_type": "Special Fund",
+      "from": 70,
+      "to": 89,
+      "quantity": 20,
+      "used": 8
+    },
+    {
+      "form_type": "Passport",
+      "fund_type": "General Fund",
+      "from": 90,
+      "to": 109,
+      "quantity": 20,
+      "used": 0
+    }
+  ]
+}
