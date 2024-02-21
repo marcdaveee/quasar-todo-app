@@ -38,6 +38,11 @@ const routes = [
             component: () => import("../pages/UserManagement/Users.vue"),
           },
           {
+            path: "dashboard",
+            name: "dashboard",
+            component: () => import("../pages/Onboarding/Dashboard.vue"),
+          },
+          {
             path: "or-numbers",
             name: "or-numbers",
             component: () => import("../pages/ORNumbers/ORNumbers.vue"),
