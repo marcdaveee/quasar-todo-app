@@ -2,10 +2,16 @@ const routes = [
   {
     path: "/",
     redirect: {
-      name: "my-tasks",
+      name: "my-todos",
     },
+
     component: () => import("layouts/MainLayout.vue"),
     children: [
+      {
+        path: "my-todos",
+        name: "my-todos",
+        component: () => import("pages/IndexPage.vue"),
+      },
       {
         path: "my-tasks",
         name: "my-tasks",

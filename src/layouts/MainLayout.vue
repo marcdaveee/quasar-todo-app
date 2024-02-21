@@ -41,6 +41,12 @@ import EssentialLink from "components/EssentialLink.vue";
 
 const linksList = [
   {
+    title: "My Todos",
+    caption: "Get List of todos using Axios",
+    icon: "task",
+    route_name: "my-todos",
+  },
+  {
     title: "My Tasks",
     caption: "List of unfinished tasks",
     icon: "task",
