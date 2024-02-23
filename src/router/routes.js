@@ -3,7 +3,7 @@ const routes = [
     path: "/onboarding",
     name: "onboarding",
     redirect: {
-      name: "or-numbers",
+      name: "onboarding",
     },
     component: () => import("../layouts/MainLayout.vue"),
     children: [
@@ -23,7 +23,12 @@ const routes = [
         component: () => import("../pages/MyPage/UploadFile/ImportFile.vue"),
       },
       {
-        path: "",
+        path: "dashboard",
+        name: "dashboard",
+        component: () => import("../pages/Dashboard/Dashboard.vue"),
+      },
+      {
+        path: "menu",
         name: "main",
         component: () => import("../pages/Main.vue"),
         children: [
@@ -38,10 +43,17 @@ const routes = [
             component: () => import("../pages/UserManagement/Users.vue"),
           },
           {
-            path: "dashboard",
-            name: "dashboard",
-            component: () => import("../pages/Onboarding/Dashboard.vue"),
+            path: "todo-list",
+            name: "todo-list",
+            component: () => import("../pages/Onboarding/TodoList.vue"),
           },
+
+          {
+            path: "create-task",
+            name: "create-task",
+            component: () => import("../pages/Onboarding/CreateTask.vue"),
+          },
+
           {
             path: "or-numbers",
             name: "or-numbers",

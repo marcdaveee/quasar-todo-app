@@ -1,0 +1,19 @@
+.form-width {
+  max-width: 456px;
+}
+
+.q-input::placeholder {
+  /* WebKit browsers */
+  color: red;
+}
+
+.action-icons {
+  size: 24px;
+  color: #249990;
+  text-align: left;
+  margin: 0;
+}
+
+.required {
+  color: #ff0000 !important;
+}

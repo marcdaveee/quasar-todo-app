@@ -46,7 +46,9 @@
     font-weight: 600;
     text-align: left;
     line-height: 35.8px;
+    color: $accent-0;
   }
+
   .logout-item {
     border-top: 1px solid lightgray;
     @media screen and (min-width: 1024px) {

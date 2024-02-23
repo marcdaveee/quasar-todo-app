@@ -1,15 +1,18 @@
 <template>
-	<q-layout view="lHr LpR fFf" :class="DarkMode ? 'onboarding-dark-mode' : 'onboarding-bg-secondary'">
-		<Header />
-		<MobileSideBar />
-		<LeftSideBar />
-		<q-page-container>
-			<div class="app-wrapper q-pl-lg">
-				<router-view />
-			</div>
-		</q-page-container>
-		<PageLoader />
-	</q-layout>
+  <q-layout
+    view="lHr LpR fFf"
+    :class="DarkMode ? 'onboarding-dark-mode' : 'onboarding-bg-secondary'"
+  >
+    <Header />
+    <MobileSideBar />
+    <LeftSideBar />
+    <q-page-container>
+      <div class="app-wrapper q-pl-lg">
+        <router-view />
+      </div>
+    </q-page-container>
+    <PageLoader />
+  </q-layout>
 </template>
 
 <script>

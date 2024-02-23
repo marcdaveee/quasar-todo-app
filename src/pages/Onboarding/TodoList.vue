@@ -1,0 +1,50 @@
+<template>
+  <transition
+    appear
+    enter-active-class="animated fadeIn"
+    leave-active-class="animated fadeOut"
+    :duration="2000"
+  >
+    <div class="todo-list">
+      <!-- Place your elements here -->
+      <div class="row justify-between items-center q-mb-lg">
+        <div class="text-24 text-bold onboarding-text-secondary">
+          To-Do-List
+        </div>
+
+        <q-btn
+          dense
+          flat
+          no-caps
+          label="Create a new task"
+          class="onboarding-button onboarding-border-accent-0 text-white text-20 onboarding-bg-accent-0 q-px-xl"
+          :to="{ name: 'create-task' }"
+        />
+      </div>
+
+      <div class="flex justify-start q-mb-lg">
+        <Filters
+          dynamicHeight="16"
+          :searchVisible="true"
+          :filterDateVisible="false"
+          :labelVisible="true"
+          pathEndPoint="dashboard"
+        />
+      </div>
+
+      <div class="row justify-between">
+        <!-- Task board for In-Process Task -->
+        <TaskBoard title="In-Process" :todoList="inProcessTodos" class="" />
+
+        <!-- Task board for In-Process Task -->
+        <TaskBoard title="Done" :todoList="finishedTodos" class="" />
+      </div>
+    </div>
+  </transition>
+</template>
+
+<script src="./scripts/TodoList.js"></script>
+
+<style lang="scss" scope>
+@import "./styles/TodoList.scss";
+</style>
