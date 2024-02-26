@@ -1,6 +1,7 @@
 <template>
   <!-- Wraps the task container board including the heading -->
   <div class="column justify-start items-start">
+    <!-- Heading -->
     <div
       class="status-header onboarding-bg-accent-0 text-bold onboarding-text-light"
     >

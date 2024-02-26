@@ -1,6 +1,7 @@
 import Filters from "../components/Filters.vue";
 import TaskBoard from "../components/TaskBoard.vue";
 import { computed, ref } from "vue";
+import { Todos } from "../composables/Todos.js";
 
 export default {
   components: {
@@ -9,23 +10,23 @@ export default {
   },
 
   setup() {
-    let Todos = ref([
-      {
-        id: 1,
-        text: "Read Book",
-        isCompleted: false,
-      },
-      {
-        id: 2,
-        text: "Learn Quasar",
-        isCompleted: false,
-      },
-      {
-        id: 3,
-        text: "Take out trash",
-        isCompleted: true,
-      },
-    ]);
+    // let Todos = ref([
+    //   {
+    //     id: 1,
+    //     text: "Read Book",
+    //     isCompleted: false,
+    //   },
+    //   {
+    //     id: 2,
+    //     text: "Learn Quasar",
+    //     isCompleted: false,
+    //   },
+    //   {
+    //     id: 3,
+    //     text: "Take out trash",
+    //     isCompleted: true,
+    //   },
+    // ]);
 
     // Computed Refs
     // todos that are currently in process

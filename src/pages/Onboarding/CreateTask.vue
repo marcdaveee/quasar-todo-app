@@ -16,7 +16,7 @@
       </div>
 
       <div class="form-width">
-        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md q-mt-lg">
+        <q-form @submit="onSubmit" class="q-gutter-md q-mt-lg">
           <q-item-label class="label key_result text-weight-bold q-mb-sm"
             >Task Title:
             <span class="required">*</span>
@@ -24,6 +24,7 @@
 
           <q-input
             dense
+            v-model="taskTitle"
             borderless
             placeholder="Task Title"
             :rules="[(val) => (val !== null && val !== '') || '']"
@@ -46,12 +47,18 @@
           <!-- START - Standard infinite form -->
 
           <div
-            v-for="(task, index) in taskList"
+            v-for="(taskItem, index) in taskList"
             :key="index"
             class="onboarding-border-accent-0 onboarding-border-radius-15 q-px-md q-py-md q-mt-lg q-mb-lg fit"
           >
             <div class="top-actions row justify-end q-mb-md">
-              <q-btn flat dense class="action-icons" icon="delete" />
+              <q-btn
+                flat
+                dense
+                class="action-icons"
+                icon="delete"
+                @click="removeKeyResult(index)"
+              />
               <q-btn flat dense class="action-icons" icon="arrow_drop_up" />
             </div>
 
@@ -63,7 +70,7 @@
 
               <div class="field">
                 <q-input
-                  v-model="taskName"
+                  v-model="taskList[index].taskDesc"
                   dense
                   borderless
                   placeholder="Enter your task..."
@@ -82,9 +89,8 @@
               <q-input
                 dense
                 borderless
-                v-model="time"
+                v-model="taskList[index].time"
                 mask="time"
-                :rules="['time']"
                 hide-bottom-space
                 class="onboarding-input-field onboarding-border-accent-0 onboarding-border-radius-10 onboarding-text-accent-0"
               >
@@ -99,7 +105,7 @@
                       class="onboarding-text-accent-0"
                     >
                       <q-time
-                        v-model="time"
+                        v-model="taskList[index].time"
                         color="blue"
                         text-color="white"
                         class="onboarding-border-radius-10 text-bold"
@@ -110,6 +116,7 @@
                             label="Cancel"
                             color="accent-0"
                             flat
+                            @click="taskList[index].time = '00:00'"
                           />
                           <q-btn
                             v-close-popup
@@ -149,22 +156,29 @@
               round
               class="onboarding-bg-accent-0 text-white onboarding-text-accent-1"
               id="generateKeyInput"
-              @click="addKeyResult()"
+              @click="addKeyResult(currentLength - 1)"
               no-caps
               icon="add"
             />
           </div>
 
-          <q-toggle v-model="accept" label="I accept the license and terms" />
-
-          <div>
-            <q-btn label="Submit" type="submit" color="primary" />
+          <div class="q-mt-xl row justify-start">
             <q-btn
-              label="Reset"
-              type="reset"
-              color="primary"
+              dense
               flat
-              class="q-ml-sm"
+              no-caps
+              label="Cancel"
+              class="onboarding-button text-20 onboarding-bg-primary q-px-sm"
+              @click="$router.go(-1)"
+            />
+            <q-btn
+              dense
+              flat
+              no-caps
+              rounded
+              label="Save"
+              class="save-button onboarding-border-accent-0 text-white text-20 onboarding-bg-accent-0 q-px-xl"
+              type="submit"
             />
           </div>
         </q-form>

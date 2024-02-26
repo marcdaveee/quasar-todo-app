@@ -22,6 +22,7 @@ import PageLoader from "./components/PageLoader.vue";
 import MobileSideBar from "./components/MobileSideBar.vue";
 import { FetchUser } from "../composables/UserManagement";
 import { TogglePageLoader } from "../composables/MainLayout";
+
 // import { DarkMode } from 'src/core/composables/Triggers';
 import { LocalStorage } from "quasar";
 export default {

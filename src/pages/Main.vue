@@ -30,7 +30,7 @@
 <script>
 import MainMenu from "../components/MainMenu.vue";
 import { useQuasar } from "quasar";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 export default {
   components: {

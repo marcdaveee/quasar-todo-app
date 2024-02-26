@@ -1,6 +1,8 @@
 .todo-list {
   padding: 40px 32px;
   box-sizing: border-box;
+  overflow-y: scroll;
+  height: 100%;
 
   .onboarding-button {
     font-weight: 400;
