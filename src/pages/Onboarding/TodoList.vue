@@ -32,12 +32,24 @@
         />
       </div>
 
-      <div class="row justify-between">
+      <div v-for="todo in Todos" :key="todo.id" class="row justify-between">
         <!-- Task board for In-Process Task -->
-        <TaskBoard title="In-Process" :todoList="inProcessTodos" class="" />
+        <TaskBoard
+          status="In-Process"
+          :taskTitle="todo.taskTitle"
+          :todoList="inProcessTodos(todo.taskItems)"
+          :dateCreated="todo.dateCreated"
+          class=""
+        />
 
         <!-- Task board for In-Process Task -->
-        <TaskBoard title="Done" :todoList="finishedTodos" class="" />
+        <TaskBoard
+          status="Done"
+          :taskTitle="todo.taskTitle"
+          :todoList="finishedTodos(todo.taskItems)"
+          :dateCreated="todo.dateCreated"
+          class=""
+        />
       </div>
     </div>
   </transition>

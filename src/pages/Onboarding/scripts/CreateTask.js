@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Todos } from "../composables/Todos.js";
+import { date } from "quasar";
 
 export default {
   components: {},
@@ -16,9 +17,14 @@ export default {
     // Track task title input state
     const taskTitle = ref(null);
 
-    const taskItem = {};
+    const timeStamp = Date.now();
+    const dateCreated = date.formatDate(timeStamp, "MMMM DD, YYYY");
 
-    // list for adding new tasks
+    // const dateCreated = ref(formattedString);
+
+    const taskItems = ref(null);
+
+    // holds the list of task items
     let taskList = ref([
       { id: null, taskDesc: null, time: "00:00", isCompleted: false },
     ]);
@@ -39,6 +45,10 @@ export default {
         });
       } else {
         if (taskList.value[index].taskDesc) {
+          // assign id to the inserted item
+          taskList.value[index].id = `${currentId.value}-${index}`;
+
+          // Render new form card for adding new task input
           taskList.value.push({
             id: null,
             taskDesc: null,
@@ -56,15 +66,22 @@ export default {
       }
     };
 
-    // Saving New Asdded task
+    // Saving New Added task
     const onSubmit = () => {
-      taskList.value.forEach((task, index) => {
-        Todos.value.push({
-          id: (currentId.value += 1),
-          text: taskList.value[index].taskDesc,
-          isCompleted: false,
-        });
-        console.log(currentId.value);
+      // taskList.value.forEach((task, index) => {
+      //   taskList.value.push({
+      //     taskItemId: `${currentId.value}-${index}`,
+      //     text: taskList.value[index].taskDesc,
+      //     time: taskList.value[index].time,
+      //     isCompleted: false,
+      //   });
+      // });
+
+      Todos.value.push({
+        id: currentId.value,
+        taskTitle: taskTitle.value,
+        dateCreated: dateCreated,
+        taskItems: taskList,
       });
 
       router.push("/onboarding/menu/todo-list");
@@ -76,6 +93,7 @@ export default {
       router,
       currentLength,
       taskTitle,
+      dateCreated,
       taskList,
       Todos,
       addKeyResult,

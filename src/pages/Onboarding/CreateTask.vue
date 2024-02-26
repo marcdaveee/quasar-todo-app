@@ -90,7 +90,6 @@
                 dense
                 borderless
                 v-model="taskList[index].time"
-                mask="time"
                 hide-bottom-space
                 class="onboarding-input-field onboarding-border-accent-0 onboarding-border-radius-10 onboarding-text-accent-0"
               >
@@ -107,6 +106,7 @@
                       <q-time
                         v-model="taskList[index].time"
                         color="blue"
+                        mask="h:mm A"
                         text-color="white"
                         class="onboarding-border-radius-10 text-bold"
                       >
@@ -116,7 +116,7 @@
                             label="Cancel"
                             color="accent-0"
                             flat
-                            @click="taskList[index].time = '00:00'"
+                            @click="taskList[index].time = '00:00 AM'"
                           />
                           <q-btn
                             v-close-popup
