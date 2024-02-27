@@ -12,7 +12,9 @@
 
       <div class="flex justifty-start items-center onboarding-text-accent-0">
         <q-btn @click="$router.go(-1)" round dense flat icon="arrow_back" />
-        <h5 class="text-24 text-bold q-my-none q-ml-sm">Create A New Task</h5>
+        <h5 class="text-24 text-bold q-my-none q-ml-sm">
+          {{ !$route.params.id ? "Create A New Task" : "Update To-Do List" }}
+        </h5>
       </div>
 
       <div class="form-width">

@@ -1,5 +1,5 @@
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { Todos } from "../composables/Todos.js";
 import { date } from "quasar";
 
@@ -7,6 +7,7 @@ export default {
   components: {},
 
   setup() {
+    const route = useRoute();
     const router = useRouter();
 
     // the id to be assigned to the next todo item
@@ -28,6 +29,12 @@ export default {
     let taskList = ref([
       { id: null, taskDesc: null, time: "00:00", isCompleted: false },
     ]);
+
+    if (route.params.id) {
+      console.log(route.params.id);
+      taskTitle.value = Todos.value[route.params.id].taskTitle;
+      taskList.value = Todos.value[route.params.id].taskItems;
+    }
 
     // get the current number of tasks to be added
     let currentLength = computed(() => {
@@ -68,21 +75,14 @@ export default {
 
     // Saving New Added task
     const onSubmit = () => {
-      // taskList.value.forEach((task, index) => {
-      //   taskList.value.push({
-      //     taskItemId: `${currentId.value}-${index}`,
-      //     text: taskList.value[index].taskDesc,
-      //     time: taskList.value[index].time,
-      //     isCompleted: false,
-      //   });
-      // });
-
-      Todos.value.push({
-        id: currentId.value,
-        taskTitle: taskTitle.value,
-        dateCreated: dateCreated,
-        taskItems: taskList,
-      });
+      if (!route.params.id) {
+        Todos.value.push({
+          id: currentId.value,
+          taskTitle: taskTitle.value,
+          dateCreated: dateCreated,
+          taskItems: taskList,
+        });
+      }
 
       router.push("/onboarding/menu/todo-list");
     };

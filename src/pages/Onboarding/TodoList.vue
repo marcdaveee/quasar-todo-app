@@ -39,6 +39,7 @@
           :taskTitle="todo.taskTitle"
           :todoList="inProcessTodos(todo.taskItems)"
           :dateCreated="todo.dateCreated"
+          :taskId="todo.id"
           class=""
         />
 

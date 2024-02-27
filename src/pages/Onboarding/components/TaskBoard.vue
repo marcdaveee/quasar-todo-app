@@ -23,7 +23,7 @@
                   <q-item
                     clickable
                     class="action-menu"
-                    :to="{ name: 'update-task' }"
+                    :to="{ path: `create-task/${taskId}` }"
                   >
                     <q-item-section>Edit</q-item-section>
                   </q-item>
@@ -96,7 +96,7 @@ export default {
   components: {
     TaskItem,
   },
-  props: ["status", "taskTitle", "todoList", "dateCreated"],
+  props: ["status", "taskId", "taskTitle", "todoList", "dateCreated"],
   setup() {
     let expanded = ref(false);
 

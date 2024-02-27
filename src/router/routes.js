@@ -49,10 +49,16 @@ const routes = [
           },
 
           {
-            path: "create-task",
+            path: "create-task/:id?",
             name: "create-task",
             component: () => import("../pages/Onboarding/CreateTask.vue"),
           },
+
+          // {
+          //   path: "edit-task/:task-id",
+          //   name: "edit-task",
+          //   component: () => import("../pages/Onboarding/EditTask.vue"),
+          // },
 
           {
             path: "or-numbers",
