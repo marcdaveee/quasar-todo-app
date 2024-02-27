@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Todos } from "../composables/Todos.js";
 import { date } from "quasar";
@@ -32,7 +32,9 @@ export default {
       { id: null, taskDesc: null, time: "00:00", isCompleted: false },
     ]);
 
-    let toEditTask = ref([]);
+    // When editing task, this will temporarily hold the original value
+    let currentTitle = null;
+    let currentTaskItems = [];
 
     if (route.params.id) {
       console.log(route.params.id);
@@ -40,6 +42,11 @@ export default {
       //   toEditTaskTitle: Todos.value[route.params.id].taskTitle,
       //   toEditTaskList: Todos.value[route.params.id].taskItems,
       // };
+
+      watch(Todos, (newTodo, oldTodo) => {});
+
+      currentTitle = Todos.value[route.params.id].taskTitle;
+      currentTaskItems = Todos.value[route.params.id].taskItems;
 
       taskTitle.value = Todos.value[route.params.id].taskTitle;
       taskList.value = Todos.value[route.params.id].taskItems;
@@ -108,16 +115,24 @@ export default {
       router.push("/onboarding/menu/todo-list");
     };
 
+    // Get the original values when updates are made in the form but not saved
+    const cancelEdit = () => {
+      Todos.value[route.params.id].taskTitle = currentTitle;
+      Todos.value[route.params.id].taskItems = currentTaskItems;
+      router.push("/onboarding/menu/todo-list");
+    };
+
     return {
       currentId,
       onSubmit,
+      taskForm,
       router,
       currentLength,
       taskTitle,
       dateCreated,
       taskList,
-      taskDetails,
       Todos,
+      cancelEdit,
       addKeyResult,
       removeKeyResult,
     };

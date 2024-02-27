@@ -1,13 +1,18 @@
 import Filters from "../components/Filters.vue";
 import TaskBoard from "../components/TaskBoard.vue";
+import MainDialog from "../../../components/MainDialog.vue";
+import DeleteConfirmation from "../components/DeleteConfirmation.vue";
+import { ToggleMainDialogState } from "../../../composables/Triggers.js";
 import { computed, ref, watch } from "vue";
 import { useQuasar } from "quasar";
-import { Todos } from "../composables/Todos.js";
+import { Todos, TaskDelete } from "../composables/Todos.js";
 
 export default {
   components: {
     Filters,
     TaskBoard,
+    MainDialog,
+    DeleteConfirmation,
   },
 
   setup() {
@@ -45,6 +50,13 @@ export default {
       console.log("new todos added!");
     });
 
+    const deleteTask = (id) => {
+      // ORNumberDetails.value = id;
+      console.log("id to delete: ", id);
+      TaskDelete.value = id;
+      ToggleMainDialogState();
+    };
+
     // watch(Todos.value.taskItems, (todos) => {
     //   $q.notify({
     //     position: $q.screen.width < 767 ? "top" : "bottom-right",
@@ -81,6 +93,7 @@ export default {
     return {
       Filters,
       Todos,
+      deleteTask,
       inProcessTodos,
       finishedTodos,
     };

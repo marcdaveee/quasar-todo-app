@@ -27,7 +27,12 @@
                   >
                     <q-item-section>Edit</q-item-section>
                   </q-item>
-                  <q-item clickable class="action-menu">
+
+                  <q-item
+                    clickable
+                    class="action-menu"
+                    @click="$emit('delete-task', taskId)"
+                  >
                     <q-item-section>Delete</q-item-section>
                   </q-item>
                 </q-list>
@@ -97,6 +102,8 @@ export default {
     TaskItem,
   },
   props: ["status", "taskId", "taskTitle", "todoList", "dateCreated"],
+  emits: ["delete-task"],
+
   setup() {
     let expanded = ref(false);
 

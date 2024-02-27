@@ -171,7 +171,7 @@
               no-caps
               label="Cancel"
               class="onboarding-button text-20 onboarding-bg-primary q-px-sm"
-              @click="$router.go(-1)"
+              @click="!$route.params.id ? $router.go(-1) : cancelEdit()"
             />
             <q-btn
               dense
