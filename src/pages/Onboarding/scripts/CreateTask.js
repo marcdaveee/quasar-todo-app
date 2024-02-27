@@ -18,23 +18,41 @@ export default {
     // Track task title input state
     const taskTitle = ref(null);
 
+    let taskForm = ref({
+      taskTitle: null,
+      dateCreated: null,
+      taskItems: [null],
+    });
+
     const timeStamp = Date.now();
     const dateCreated = date.formatDate(timeStamp, "MMMM DD, YYYY");
 
-    // const dateCreated = ref(formattedString);
-
-    const taskItems = ref(null);
-
-    // holds the list of task items
+    // holds the list of task items to be created
     let taskList = ref([
       { id: null, taskDesc: null, time: "00:00", isCompleted: false },
     ]);
 
+    let toEditTask = ref([]);
+
     if (route.params.id) {
       console.log(route.params.id);
+      // toEditTask.value = {
+      //   toEditTaskTitle: Todos.value[route.params.id].taskTitle,
+      //   toEditTaskList: Todos.value[route.params.id].taskItems,
+      // };
+
       taskTitle.value = Todos.value[route.params.id].taskTitle;
       taskList.value = Todos.value[route.params.id].taskItems;
     }
+
+    // Return task details when user is editting task
+    // let taskDetails = computed(() => {
+    //   if (route.params.id) {
+    //     return toEditTask.value;
+    //   } else {
+    //     return taskForm.value;
+    //   }
+    // });
 
     // get the current number of tasks to be added
     let currentLength = computed(() => {
@@ -76,12 +94,15 @@ export default {
     // Saving New Added task
     const onSubmit = () => {
       if (!route.params.id) {
+        console.log("No route params present");
         Todos.value.push({
           id: currentId.value,
           taskTitle: taskTitle.value,
           dateCreated: dateCreated,
           taskItems: taskList,
         });
+      } else {
+        console.log("Route params present");
       }
 
       router.push("/onboarding/menu/todo-list");
@@ -95,6 +116,7 @@ export default {
       taskTitle,
       dateCreated,
       taskList,
+      taskDetails,
       Todos,
       addKeyResult,
       removeKeyResult,
