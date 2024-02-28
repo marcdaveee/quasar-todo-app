@@ -32,7 +32,7 @@
         />
       </div>
 
-      <div v-for="(todo, index) in Todos" :key="todo.id" class="row">
+      <div v-for="(todo, index) in Tasks" :key="todo.id" class="row">
         <!-- Task board for In-Process Task -->
         <TaskBoard
           status="In-Process"
@@ -41,7 +41,7 @@
           :dateCreated="todo.dateCreated"
           :taskId="todo.id"
           @delete-task="deleteTask"
-          class="col q-mr-md"
+          class="col q-mr-lg"
         />
 
         <!-- Task board for Done Task -->

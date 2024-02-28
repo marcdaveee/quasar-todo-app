@@ -1,6 +1,6 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { Todos } from "../composables/Todos.js";
+import { Tasks } from "../composables/TodoList.js";
 import { date } from "quasar";
 
 export default {
@@ -12,22 +12,17 @@ export default {
 
     // the id to be assigned to the next todo item
     let currentId = computed(() => {
-      return Todos.value.length;
+      return Tasks.value.length;
     });
 
     // Track task title input state
     const taskTitle = ref(null);
 
-    // let taskForm = ref({
-    //   taskTitle: null,
-    //   dateCreated: null,
-    //   taskItems: [null],
-    // });
-
+    // Get current Date
     const timeStamp = Date.now();
     const dateCreated = date.formatDate(timeStamp, "MMMM DD, YYYY");
 
-    // holds the list of task items to be created
+    // holds the list of task/todo items to be created for a Task
     let taskList = ref([
       { id: null, taskDesc: null, time: "00:00", isCompleted: false },
     ]);
@@ -36,37 +31,21 @@ export default {
     let currentTitle = null;
     let currentTaskItems = [];
 
+    // If editing a task, the values of the task is displayed in the form
     if (route.params.id) {
-      console.log(route.params.id);
-      // toEditTask.value = {
-      //   toEditTaskTitle: Todos.value[route.params.id].taskTitle,
-      //   toEditTaskList: Todos.value[route.params.id].taskItems,
-      // };
+      currentTitle = Tasks.value[route.params.id].taskTitle.value;
+      currentTaskItems = Tasks.value[route.params.id].taskItems.value;
 
-      // watch(Todos, (newTodo, oldTodo) => {});
-
-      currentTitle = Todos.value[route.params.id].taskTitle.value;
-      currentTaskItems = Todos.value[route.params.id].taskItems.value;
-
-      taskTitle.value = Todos.value[route.params.id].taskTitle;
-      taskList.value = Todos.value[route.params.id].taskItems;
+      taskTitle.value = Tasks.value[route.params.id].taskTitle;
+      taskList.value = Tasks.value[route.params.id].taskItems;
     }
 
-    // Return task details when user is editting task
-    // let taskDetails = computed(() => {
-    //   if (route.params.id) {
-    //     return toEditTask.value;
-    //   } else {
-    //     return taskForm.value;
-    //   }
-    // });
-
-    // get the current number of tasks to be added
+    // get the current number of task/todo items added in the tasks list
     let currentLength = computed(() => {
       return taskList.value.length;
     });
 
-    // called when plus button is clicked
+    // called when plus button is clicked in the task form
     const addKeyResult = (index) => {
       if (index < 0) {
         taskList.value.push({
@@ -80,7 +59,7 @@ export default {
           // assign id to the inserted item
           taskList.value[index].id = `${currentId.value}-${index}`;
 
-          // Render new form card for adding new task input
+          // Render a new form card for adding a new task/todo item
           taskList.value.push({
             id: null,
             taskDesc: null,
@@ -92,48 +71,46 @@ export default {
     };
 
     // called when delete button in the form card is clicked
+    // removes the task/todo item added in the form card
     const removeKeyResult = (index) => {
       if (index > -1) {
         taskList.value.splice(index, 1);
       }
     };
 
-    // Saving New Added task
+    // Saving the Task
     const onSubmit = () => {
       if (!route.params.id) {
-        console.log("No route params present");
-        Todos.value.push({
+        Tasks.value.push({
           id: currentId.value,
           taskTitle: taskTitle.value,
           dateCreated: dateCreated,
           taskItems: taskList,
         });
       } else {
-        console.log("Route params present");
-        Todos.value[route.params.id].taskTitle = taskTitle.value;
-        Todos.value[route.params.id].taskItems = taskList.value;
+        Tasks.value[route.params.id].taskTitle = taskTitle.value;
+        Tasks.value[route.params.id].taskItems = taskList.value;
       }
 
       router.push("/onboarding/menu/todo-list");
     };
 
-    // Get the original values when updates are made in the form but not saved
+    // Get the original values when updates are made in the form but were cancelled
     const cancelEdit = () => {
-      Todos.value[route.params.id].taskTitle.value = currentTitle;
-      Todos.value[route.params.id].taskItems.value = currentTaskItems;
+      Tasks.value[route.params.id].taskTitle.value = currentTitle;
+      Tasks.value[route.params.id].taskItems.value = currentTaskItems;
       router.push("/onboarding/menu/todo-list");
     };
 
     return {
       currentId,
       onSubmit,
-
       router,
       currentLength,
       taskTitle,
       dateCreated,
       taskList,
-      Todos,
+      Tasks,
       cancelEdit,
       addKeyResult,
       removeKeyResult,

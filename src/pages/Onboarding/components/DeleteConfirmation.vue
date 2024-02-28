@@ -2,7 +2,7 @@
 import { useQuasar } from "quasar";
 import { ref } from "vue";
 import { ToggleMainDialogState } from "../../../composables/Triggers";
-import { Todos, TaskDelete } from "../composables/Todos.js";
+import { Tasks, GetTasks, TaskDelete } from "../composables/TodoList.js";
 // import { ORNumberDetails, DeleteORRange } from "../../../composables/ORNumber";
 
 const $q = useQuasar();
@@ -11,7 +11,7 @@ const closeDialog = () => {
 };
 
 const deleteTask = () => {
-  Todos.value = Todos.value.filter((todo) => todo.id != TaskDelete.value);
+  Tasks.value = Tasks.value.filter((todo) => todo.id != TaskDelete.value);
   ToggleMainDialogState();
 };
 </script>

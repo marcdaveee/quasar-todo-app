@@ -1,0 +1,40 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "taskTitle": "Final Onboarding Task",
+      "dateCreated": "February 28, 2024",
+      "taskItems": [
+        {
+          "taskItemId": "1-1",
+          "taskDesc": "Edit functionality",
+          "isCompleted": false
+        },
+
+        {
+          "taskItemId": "1-2",
+          "taskDesc": "Delete functionality",
+          "isCompleted": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "taskTitle": "Accomplishment Report",
+      "dateCreated": "February 28, 2024",
+      "taskItems": [
+        {
+          "taskItemId": "2-1",
+          "taskDesc": "Download Template",
+          "isCompleted": false
+        },
+
+        {
+          "taskItemId": "2-2",
+          "taskDesc": "Fill up form",
+          "isCompleted": false
+        }
+      ]
+    }
+  ]
+}

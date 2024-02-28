@@ -5,7 +5,13 @@ import DeleteConfirmation from "../components/DeleteConfirmation.vue";
 import { ToggleMainDialogState } from "../../../composables/Triggers.js";
 import { computed, ref, watch } from "vue";
 import { useQuasar } from "quasar";
-import { Todos, TaskDelete } from "../composables/Todos.js";
+import {
+  Tasks,
+  SetTasks,
+  GetTasks,
+  FetchTasks,
+  TaskDelete,
+} from "../composables/TodoList.js";
 
 export default {
   components: {
@@ -16,6 +22,13 @@ export default {
   },
 
   setup() {
+    let taskList = ref([]);
+
+    // Fetch Tasks
+    // FetchTasks().then((response) => {
+    //   taskList.value = GetTasks.value;
+    // });
+
     const inProcessTodos = (todos) => {
       const filteredTodos = todos.filter((todo) => {
         return todo.isCompleted == false;
@@ -35,8 +48,8 @@ export default {
     // watch for any new added todos
     const $q = useQuasar();
 
-    watch(Todos, (newCountTodos, oldCountTodos) => {
-      if (newCountTodos.length > oldCountTodos.length) {
+    watch(Tasks, (newCountTasks, oldCountTasks) => {
+      if (newCountTasks.length > oldCountTasks.length) {
         $q.notify({
           position: "bottom-right",
           classes: "onboarding-success-notif q-px-lg q-pt-none q-pb-none",
@@ -92,7 +105,7 @@ export default {
 
     return {
       Filters,
-      Todos,
+      Tasks,
       deleteTask,
       inProcessTodos,
       finishedTodos,

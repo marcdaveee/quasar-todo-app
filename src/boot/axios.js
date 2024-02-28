@@ -3,7 +3,7 @@ import { LocalStorage } from "quasar";
 import axios from "axios";
 
 let axiosConfig = {
-  baseURL: "http://localhost/core-backend",
+  baseURL: "http://localhost:3000",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
