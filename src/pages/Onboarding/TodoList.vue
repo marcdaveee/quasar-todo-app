@@ -32,11 +32,7 @@
         />
       </div>
 
-      <div
-        v-for="(todo, index) in Todos"
-        :key="todo.id"
-        class="row justify-between"
-      >
+      <div v-for="(todo, index) in Todos" :key="todo.id" class="row">
         <!-- Task board for In-Process Task -->
         <TaskBoard
           status="In-Process"
@@ -45,17 +41,17 @@
           :dateCreated="todo.dateCreated"
           :taskId="todo.id"
           @delete-task="deleteTask"
-          class=""
+          class="col q-mr-md"
         />
 
-        <!-- Task board for In-Process Task -->
+        <!-- Task board for Done Task -->
         <TaskBoard
           status="Done"
           :taskTitle="todo.taskTitle"
           :todoList="finishedTodos(todo.taskItems)"
           :dateCreated="todo.dateCreated"
           @delete-task="deleteTask(index)"
-          class=""
+          class="col"
         />
       </div>
 

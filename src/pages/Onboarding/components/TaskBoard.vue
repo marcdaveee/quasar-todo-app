@@ -17,7 +17,7 @@
 
         <div class="row items-center">
           <div v-if="expanded">
-            <q-btn dense flat icon="more_horiz">
+            <q-btn dense flat icon="more_horiz" v-show="status !== 'Done'">
               <q-menu fit anchor="bottom right" self="top right">
                 <q-list style="min-width: 180px">
                   <q-item
@@ -116,7 +116,7 @@ export default {
 
 <style>
 .task-board {
-  width: 640px;
+  width: 100%;
   /* height: 100%; */
   min-height: 72px;
   padding: 32px;

@@ -18,11 +18,11 @@ export default {
     // Track task title input state
     const taskTitle = ref(null);
 
-    let taskForm = ref({
-      taskTitle: null,
-      dateCreated: null,
-      taskItems: [null],
-    });
+    // let taskForm = ref({
+    //   taskTitle: null,
+    //   dateCreated: null,
+    //   taskItems: [null],
+    // });
 
     const timeStamp = Date.now();
     const dateCreated = date.formatDate(timeStamp, "MMMM DD, YYYY");
@@ -43,10 +43,10 @@ export default {
       //   toEditTaskList: Todos.value[route.params.id].taskItems,
       // };
 
-      watch(Todos, (newTodo, oldTodo) => {});
+      // watch(Todos, (newTodo, oldTodo) => {});
 
-      currentTitle = Todos.value[route.params.id].taskTitle;
-      currentTaskItems = Todos.value[route.params.id].taskItems;
+      currentTitle = Todos.value[route.params.id].taskTitle.value;
+      currentTaskItems = Todos.value[route.params.id].taskItems.value;
 
       taskTitle.value = Todos.value[route.params.id].taskTitle;
       taskList.value = Todos.value[route.params.id].taskItems;
@@ -110,6 +110,8 @@ export default {
         });
       } else {
         console.log("Route params present");
+        Todos.value[route.params.id].taskTitle = taskTitle.value;
+        Todos.value[route.params.id].taskItems = taskList.value;
       }
 
       router.push("/onboarding/menu/todo-list");
@@ -117,15 +119,15 @@ export default {
 
     // Get the original values when updates are made in the form but not saved
     const cancelEdit = () => {
-      Todos.value[route.params.id].taskTitle = currentTitle;
-      Todos.value[route.params.id].taskItems = currentTaskItems;
+      Todos.value[route.params.id].taskTitle.value = currentTitle;
+      Todos.value[route.params.id].taskItems.value = currentTaskItems;
       router.push("/onboarding/menu/todo-list");
     };
 
     return {
       currentId,
       onSubmit,
-      taskForm,
+
       router,
       currentLength,
       taskTitle,
