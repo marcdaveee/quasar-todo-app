@@ -3,38 +3,50 @@
     {
       "id": 1,
       "taskTitle": "Final Onboarding Task",
-      "dateCreated": "February 28, 2024",
-      "taskItems": [
-        {
-          "taskItemId": "1-1",
-          "taskDesc": "Edit functionality",
-          "isCompleted": false
-        },
-
-        {
-          "taskItemId": "1-2",
-          "taskDesc": "Delete functionality",
-          "isCompleted": false
-        }
-      ]
+      "dateCreated": "February 28, 2024"
     },
     {
       "id": 2,
       "taskTitle": "Accomplishment Report",
-      "dateCreated": "February 28, 2024",
-      "taskItems": [
-        {
-          "taskItemId": "2-1",
-          "taskDesc": "Download Template",
-          "isCompleted": false
-        },
-
-        {
-          "taskItemId": "2-2",
-          "taskDesc": "Fill up form",
-          "isCompleted": false
-        }
-      ]
+      "dateCreated": "February 28, 2024"
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "taskDesc": "Edit functionality",
+      "isCompleted": false,
+      "taskId": 1
+    },
+    {
+      "id": 2,
+      "taskDesc": "Delete functionality",
+      "isCompleted": false,
+      "taskId": 1
+    },
+    {
+      "id": 3,
+      "taskDesc": "Download Template",
+      "isCompleted": true,
+      "taskId": 2
+    },
+    {
+      "id": 4,
+      "taskDesc": "Fill up form",
+      "isCompleted": false,
+      "taskId": 2
+    },
+    {
+      "id": 5,
+      "taskDesc": "Fill up form",
+      "isCompleted": false,
+      "taskId": 1
+    },
+    {
+      "id": 6,
+      "taskDesc": "Fill up form",
+      "isCompleted": false,
+      "taskId": 1
     }
   ]
 }
