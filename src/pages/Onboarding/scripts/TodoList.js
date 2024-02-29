@@ -3,11 +3,12 @@ import TaskBoard from "../components/TaskBoard.vue";
 import MainDialog from "../../../components/MainDialog.vue";
 import DeleteConfirmation from "../components/DeleteConfirmation.vue";
 import { ToggleMainDialogState } from "../../../composables/Triggers.js";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useQuasar } from "quasar";
 import axios from "axios";
 import {
   Tasks,
+  FetchTasks,
   SetTasks,
   GetTasks,
   TaskDelete,
@@ -27,14 +28,9 @@ export default {
     // Fetch Tasks
 
     // const FetchTasks = async () => {
-
-    const FetchTasks = async () => {
-      axios.get("http://localhost:3000/tasks").then((response) => {
-        taskList.value = response.data;
-      });
-    };
-
-    FetchTasks();
+    onMounted(async () => {
+      await FetchTasks();
+    });
 
     const inProcessTodos = (todos) => {
       const filteredTodos = todos.filter((todo) => {

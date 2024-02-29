@@ -1,7 +1,7 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Tasks } from "../composables/TodoList.js";
-import { date } from "quasar";
+import { useQuasar, date } from "quasar";
 
 export default {
   components: {},

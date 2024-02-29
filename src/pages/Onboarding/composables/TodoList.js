@@ -2,26 +2,17 @@ import { httpGet, httpPost, httpPut, httpDel } from "../../../boot/axios";
 import { ref, readonly } from "vue";
 import axios from "axios";
 
-let SetTasks = ref([]);
+let SetTasks = ref();
 let GetTasks = readonly(SetTasks);
 
-// const FetchTasks = () => {
-//   return new Promise((resolve, reject) => {
-//     httpGet("/tasks", {
-//       success(response) {
-//         response.data.status === "success" &&
-//           (SetTasks.value = response.data.data);
-//         resolve(response.data);
-//       },
-//       catch(response) {
-//         reject(response);
-//       },
-//     });
-//   });
-// };
+const FetchTasks = () => {
+  axios.get("http://localhost:3000/tasks").then((response) => {
+    Tasks.value = response.data;
+  });
+};
 
 let Tasks = ref([]);
 
 let TaskDelete = ref(null);
 
-export { Tasks, SetTasks, GetTasks, TaskDelete };
+export { Tasks, FetchTasks, SetTasks, GetTasks, TaskDelete };
