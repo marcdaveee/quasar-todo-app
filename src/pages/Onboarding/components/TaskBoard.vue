@@ -69,7 +69,7 @@
                   <q-checkbox
                     v-model="todo.isCompleted"
                     :label="todo.taskDesc"
-                    color="teal"
+                    color="#249990"
                   />
                 </div>
 

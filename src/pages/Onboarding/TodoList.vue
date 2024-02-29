@@ -36,10 +36,10 @@
         <!-- Task board for In-Process Task -->
         <TaskBoard
           status="In-Process"
-          :taskTitle="todo.taskTitle"
-          :todoList="inProcessTodos(todo.taskItems)"
-          :dateCreated="todo.dateCreated"
-          :taskId="todo.id"
+          :taskTitle="taskList.taskTitle"
+          :todoList="inProcessTodos(taskList.taskItems)"
+          :dateCreated="taskList.dateCreated"
+          :taskId="taskList.id"
           @delete-task="deleteTask"
           class="col q-mr-lg"
         />
@@ -47,9 +47,9 @@
         <!-- Task board for Done Task -->
         <TaskBoard
           status="Done"
-          :taskTitle="todo.taskTitle"
-          :todoList="finishedTodos(todo.taskItems)"
-          :dateCreated="todo.dateCreated"
+          :taskTitle="taskList.taskTitle"
+          :todoList="finishedTodos(taskList.taskItems)"
+          :dateCreated="taskList.dateCreated"
           @delete-task="deleteTask(index)"
           class="col"
         />

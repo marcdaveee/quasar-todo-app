@@ -1,93 +1,107 @@
 <template>
-	<div class="filter">
-		<div>
-			<q-dialog
-				v-model="FilterDialogState"
-				position="bottom"
-				persistent
-				:class="DarkMode && 'onboarding-dark-mode'"
-			>
-				<q-card class="filter-card onboarding-bg-primary onboarding-text-primary">
-					<q-card-section>
-						<q-btn
-							flat
-							icon="arrow_back"
-							class="back-icon text-white q-mt-md q-ml-md fixed-top-left"
-							@click="ToggleFilterDialogState()"
-						/>
-						<div class="top-content">
-							<p class="text-center text-bold text-20">Filters</p>
-						</div>
-						<div v-if="options.length" class="q-mt-xl">
-							<div class="text-bold">Type</div>
-							<div class="q-mt-md">
-								<!-- types -->
-								<div class="flex" style="gap: 10px">
-									<div v-for="type in options" :key="type.id">
-										<q-btn
-											flat
-											no-caps
-											size="10px"
-											class="btn-types not-selected"
-											:class="{ selected: type.selected }"
-											@click="selected(type)"
-											>{{ type.label }}</q-btn
-										>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div v-if="isSearchVisible" class="q-mt-xl">
-							<div class="text-bold">Search</div>
-							<q-input
-								class="onboarding-border-accent-0 onboarding-input-field full-width q-px-md q-mr-md"
-								dense
-								borderless
-								v-model="keyword"
-								placeholder="Search"
-								><template v-slot:append>
-									<q-icon
-										@click="searchKeyword()"
-										class="onboarding-text-accent-0 cursor-pointer"
-										:class="!keyword && 'disabled'"
-										name="search"
-									/> </template
-							></q-input>
-						</div>
-						<div v-if="isDateRangeVisible">
-							<q-separator class="q-my-md" />
-							<div class="text-bold">Date</div>
-							<div class="date q-mt-sm">
-								<q-input dense borderless :model-value="dateRange ? dateRange.from : dateRange">
-									<template v-slot:append>
-										<q-icon
-											name="event"
-											:class="calendar ? 'onboarding-text-accent-0' : 'onboarding-text-accent-2'"
-											@click="calendar = true"
-										/>
-									</template>
-								</q-input>
-								<q-input dense borderless :model-value="dateRange ? dateRange.to : dateRange">
-								</q-input>
-							</div>
-						</div>
-					</q-card-section>
-					<!-- the M and Y is the default layout of q-date-->
-					<div v-if="calendar" class="calendar">
-						<q-separator size="5px" />
-						<q-date
-							class="full-width no-shadow onboarding-bg-primary"
-							mask="MMM DD, YYYY"
-							v-model="dateRange"
-							@update:model-value="filter('date-range')"
-							range
-							color="red-6"
-						/>
-					</div>
-				</q-card>
-			</q-dialog>
-		</div>
-	</div>
+  <div class="filter">
+    <div>
+      <q-dialog
+        v-model="FilterDialogState"
+        position="bottom"
+        persistent
+        :class="DarkMode && 'onboarding-dark-mode'"
+      >
+        <q-card
+          class="filter-card onboarding-bg-primary onboarding-text-primary"
+        >
+          <q-card-section>
+            <q-btn
+              flat
+              icon="arrow_back"
+              class="back-icon text-white q-mt-md q-ml-md fixed-top-left"
+              @click="ToggleFilterDialogState()"
+            />
+            <div class="top-content">
+              <p class="text-center text-bold text-20">Filters</p>
+            </div>
+            <div v-if="options.length" class="q-mt-xl">
+              <div class="text-bold">Type</div>
+              <div class="q-mt-md">
+                <!-- types -->
+                <div class="flex" style="gap: 10px">
+                  <div v-for="type in options" :key="type.id">
+                    <q-btn
+                      flat
+                      no-caps
+                      size="10px"
+                      class="btn-types not-selected"
+                      :class="{ selected: type.selected }"
+                      @click="selected(type)"
+                      >{{ type.label }}</q-btn
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="isSearchVisible" class="q-mt-xl">
+              <div class="text-bold">Search</div>
+              <q-input
+                class="onboarding-border-accent-0 onboarding-input-field full-width q-px-md q-mr-md"
+                dense
+                borderless
+                v-model="keyword"
+                placeholder="Search"
+                ><template v-slot:append>
+                  <q-icon
+                    @click="searchKeyword()"
+                    class="onboarding-text-accent-0 cursor-pointer"
+                    :class="!keyword && 'disabled'"
+                    name="search"
+                  /> </template
+              ></q-input>
+            </div>
+            <div v-if="isDateRangeVisible">
+              <q-separator class="q-my-md" />
+              <div class="text-bold">Date</div>
+              <div class="date q-mt-sm">
+                <q-input
+                  dense
+                  borderless
+                  :model-value="dateRange ? dateRange.from : dateRange"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      name="event"
+                      :class="
+                        calendar
+                          ? 'onboarding-text-accent-0'
+                          : 'onboarding-text-accent-2'
+                      "
+                      @click="calendar = true"
+                    />
+                  </template>
+                </q-input>
+                <q-input
+                  dense
+                  borderless
+                  :model-value="dateRange ? dateRange.to : dateRange"
+                >
+                </q-input>
+              </div>
+            </div>
+          </q-card-section>
+          <!-- the M and Y is the default layout of q-date-->
+          <div v-if="calendar" class="calendar">
+            <q-separator size="5px" />
+            <q-date
+              class="full-width no-shadow onboarding-bg-primary"
+              mask="MMM DD, YYYY"
+              v-model="dateRange"
+              @update:model-value="filter('date-range')"
+              range
+              color="red-6"
+            />
+          </div>
+        </q-card>
+      </q-dialog>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -226,9 +240,6 @@ export default {
 </script>
 
 <style lang="scss">
-.filter {
-}
-
 // blurry background
 .q-dialog__backdrop {
   pointer-events: fill;

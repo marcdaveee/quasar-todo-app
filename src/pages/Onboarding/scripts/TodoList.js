@@ -5,11 +5,11 @@ import DeleteConfirmation from "../components/DeleteConfirmation.vue";
 import { ToggleMainDialogState } from "../../../composables/Triggers.js";
 import { computed, ref, watch } from "vue";
 import { useQuasar } from "quasar";
+import axios from "axios";
 import {
   Tasks,
   SetTasks,
   GetTasks,
-  FetchTasks,
   TaskDelete,
 } from "../composables/TodoList.js";
 
@@ -25,9 +25,16 @@ export default {
     let taskList = ref([]);
 
     // Fetch Tasks
-    // FetchTasks().then((response) => {
-    //   taskList.value = GetTasks.value;
-    // });
+
+    // const FetchTasks = async () => {
+
+    const FetchTasks = async () => {
+      axios.get("http://localhost:3000/tasks").then((response) => {
+        taskList.value = response.data;
+      });
+    };
+
+    FetchTasks();
 
     const inProcessTodos = (todos) => {
       const filteredTodos = todos.filter((todo) => {
