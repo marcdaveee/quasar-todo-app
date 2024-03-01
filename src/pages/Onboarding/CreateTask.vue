@@ -24,9 +24,10 @@
             <span class="required">*</span>
           </q-item-label>
 
+          <!-- v-model="taskTitle" -->
           <q-input
             dense
-            v-model="taskTitle"
+            v-model="taskForm.taskTitle"
             borderless
             placeholder="Task Title"
             :rules="[(val) => (val !== null && val !== '') || '']"
@@ -49,7 +50,7 @@
           <!-- START - Standard infinite form -->
 
           <div
-            v-for="(taskItem, index) in taskList"
+            v-for="(taskItem, index) in taskForm.taskList"
             :key="index"
             class="onboarding-border-accent-0 onboarding-border-radius-15 q-px-md q-py-md q-mt-lg q-mb-lg fit"
           >
@@ -72,7 +73,7 @@
 
               <div class="field">
                 <q-input
-                  v-model="taskList[index].taskDesc"
+                  v-model="taskForm.taskList[index].taskDesc"
                   dense
                   borderless
                   placeholder="Enter your task..."
@@ -91,7 +92,7 @@
               <q-input
                 dense
                 borderless
-                v-model="taskList[index].time"
+                v-model="taskForm.taskList[index].time"
                 hide-bottom-space
                 class="onboarding-input-field onboarding-border-accent-0 onboarding-border-radius-10 onboarding-text-accent-0"
               >
@@ -106,7 +107,7 @@
                       class="onboarding-text-accent-0"
                     >
                       <q-time
-                        v-model="taskList[index].time"
+                        v-model="taskForm.taskList[index].time"
                         color="blue"
                         mask="h:mm A"
                         text-color="white"
@@ -118,7 +119,7 @@
                             label="Cancel"
                             color="accent-0"
                             flat
-                            @click="taskList[index].time = '00:00 AM'"
+                            @click="taskForm.taskList[index].time = '00:00 AM'"
                           />
                           <q-btn
                             v-close-popup

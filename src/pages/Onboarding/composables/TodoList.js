@@ -13,6 +13,7 @@ const FetchTasks = async () => {
   await axios.get("http://localhost:3000/tasks").then((response) => {
     Tasks.value = response.data;
     console.log(Tasks.value[0].taskTitle);
+    console.log(Tasks.value[0].todos);
   });
 };
 
@@ -21,6 +22,15 @@ const FetchTasksWithTodos = async () => {
     .get("http://localhost:3000/tasks?_embed=todos")
     .then((response) => {
       Tasks.value = response.data;
+      console.log(Tasks.value);
+    });
+};
+
+const FetchTask = async (taskId) => {
+  await axios
+    .get(`http://localhost:3000/tasks/${taskId}?_embed=todos`)
+    .then((response) => {
+      return response.data;
     });
 };
 
@@ -29,6 +39,41 @@ const FetchTodo = async (id) => {
     console.log(response.data);
 
     return response.data;
+  });
+};
+
+const AddTask = async (task) => {
+  let taskToAdd = { taskTitle: task.taskTitle, dateCreated: task.dateCreated };
+  let todosToAdd = [];
+  await axios
+    .post("http://localhost:3000/tasks", taskToAdd)
+    .then((response) => {
+      console.log(response.data);
+      Tasks.value.push(response.data);
+      task.taskList.forEach((todo) => {
+        todo.taskId = response.data.id;
+        console.log("taskId = ", todo.taskId);
+        console.log("todo = ", todo);
+        todosToAdd.push(AddTodos(todo));
+        // FetchTask(response.data);
+      });
+      let todoIndex = Tasks.value.findIndex(
+        (todo) => todo.id === response.data.taskId
+      );
+      Tasks.value[todoIndex].todos = todosToAdd;
+    });
+};
+
+const AddTodos = async (todo) => {
+  await axios.post("http://localhost:3000/todos", todo).then((response) => {
+    console.log(response.data);
+    return response.data;
+    // let todoIndex = Tasks.value.findIndex(
+    //   (todo) => todo.id === response.data.taskId
+    // );
+    // console.log("Task Index: ", todoIndex);
+    // Tasks.value[todoIndex].todos.push(response.data);
+    // console.log(Tasks.value[todoIndex].todos);
   });
 };
 
@@ -115,6 +160,8 @@ export {
   FetchTasksWithTodos,
   FetchTodo,
   UpdateTodo,
+  FetchTask,
+  AddTask,
   SetTasks,
   GetTasks,
   TaskDelete,

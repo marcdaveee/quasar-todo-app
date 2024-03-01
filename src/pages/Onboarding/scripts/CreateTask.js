@@ -6,6 +6,7 @@ import {
   FetchTasks,
   FetchTodo,
   FetchTasksWithTodos,
+  AddTask,
   SetTasks,
   GetTasks,
   TaskDelete,
@@ -18,6 +19,18 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
+    // Get current Date
+    const timeStamp = Date.now();
+    const dateCreated = date.formatDate(timeStamp, "MMMM DD, YYYY");
+
+    const taskForm = ref({
+      taskTitle: null,
+      dateCreated: dateCreated,
+      taskList: [
+        { taskDesc: null, time: "00:00", isCompleted: false, taskId: null },
+      ],
+    });
+
     // the id to be assigned to the next todo item
     let currentId = computed(() => {
       return Tasks.value.length;
@@ -25,10 +38,6 @@ export default {
 
     // Track task title input state
     const taskTitle = ref(null);
-
-    // Get current Date
-    const timeStamp = Date.now();
-    const dateCreated = date.formatDate(timeStamp, "MMMM DD, YYYY");
 
     // holds the list of task/todo items to be created for a Task
     let taskList = ref([
@@ -50,29 +59,33 @@ export default {
 
     // get the current number of task/todo items added in the tasks list
     let currentLength = computed(() => {
-      return taskList.value.length;
+      return taskForm.value.taskList.length;
     });
 
     // called when plus button is clicked in the task form
+    // A new form card will only appear if the current card has input
     const addKeyResult = (index) => {
       if (index < 0) {
-        taskList.value.push({
-          id: null,
+        taskForm.value.taskList.push({
+          // id: null,
           taskDesc: null,
           time: "00:00",
           isCompleted: false,
+          taskId: null,
         });
       } else {
-        if (taskList.value[index].taskDesc) {
+        console.log(taskForm.value.taskList[0].taskDesc);
+        if (taskForm.value.taskList[index].taskDesc) {
           // assign id to the inserted item
-          taskList.value[index].id = `${currentId.value}-${index}`;
+          // taskList.value[index].id = `${currentId.value}-${index}`;
 
           // Render a new form card for adding a new task/todo item
-          taskList.value.push({
-            id: null,
+          taskForm.value.taskList.push({
+            // id: null,
             taskDesc: null,
             time: "00:00",
             isCompleted: false,
+            taskId: null,
           });
         }
       }
@@ -82,19 +95,24 @@ export default {
     // removes the task/todo item added in the form card
     const removeKeyResult = (index) => {
       if (index > -1) {
-        taskList.value.splice(index, 1);
+        taskForm.value.taskList.splice(index, 1);
       }
     };
 
     // Saving the Task
     const onSubmit = () => {
       if (!route.params.id) {
-        Tasks.value.push({
-          id: currentId.value,
-          taskTitle: taskTitle.value,
-          dateCreated: dateCreated,
-          taskItems: taskList,
-        });
+        const taskToAdd = taskForm.value;
+        AddTask(taskToAdd);
+
+        // Todo: AddTodo(), Fetch Task
+
+        // Tasks.value.push({
+        //   id: currentId.value,
+        //   taskTitle: taskTitle.value,
+        //   dateCreated: dateCreated,
+        //   taskItems: taskList,
+        // });
       } else {
         Tasks.value[route.params.id].taskTitle = taskTitle.value;
         Tasks.value[route.params.id].taskItems = taskList.value;
@@ -111,6 +129,7 @@ export default {
     };
 
     return {
+      taskForm,
       currentId,
       onSubmit,
       router,
