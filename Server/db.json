@@ -2,7 +2,7 @@
   "tasks": [
     {
       "id": 1,
-      "taskTitle": "Final Onboarding Task",
+      "taskTitle": "Final Onboarding Tasks",
       "dateCreated": "February 28, 2024"
     },
     {
@@ -15,13 +15,7 @@
     {
       "id": 1,
       "taskDesc": "Edit functionality",
-      "isCompleted": false,
-      "taskId": 1
-    },
-    {
-      "id": 2,
-      "taskDesc": "Delete functionality",
-      "isCompleted": false,
+      "isCompleted": true,
       "taskId": 1
     },
     {
@@ -35,18 +29,6 @@
       "taskDesc": "Fill up form",
       "isCompleted": false,
       "taskId": 2
-    },
-    {
-      "id": 5,
-      "taskDesc": "Fill up form",
-      "isCompleted": false,
-      "taskId": 1
-    },
-    {
-      "id": 6,
-      "taskDesc": "Fill up form",
-      "isCompleted": false,
-      "taskId": 1
     }
   ]
 }

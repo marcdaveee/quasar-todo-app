@@ -39,13 +39,19 @@
         <q-btn flat unelevated class="forgotbtn">Forgot Password?</q-btn>
       </div>
       <div>
-        <q-btn unelevated rounded label="Login" class="loginbtn" />
+        <q-btn
+          unelevated
+          rounded
+          label="Login"
+          class="loginbtn"
+          :to="{ name: 'dashboard' }"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, Router } from "vue";
 
 export default {
   setup() {

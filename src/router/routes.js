@@ -75,7 +75,8 @@ const routes = [
     ],
   },
   {
-    path: "/login",
+    path: "/",
+    name: "login",
     component: () => import("../pages/Login.vue"),
   },
   // Always leave this as last one,

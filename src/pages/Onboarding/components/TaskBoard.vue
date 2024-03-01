@@ -66,11 +66,39 @@
               <!-- <TaskItem/> -->
               <div class="row onboarding-text-secondary items-center fit">
                 <div class="col-6 onboarding-text-primary">
+                  <div class="row items-center">
+                    <input
+                      :id="`todo-status-${todo.id}`"
+                      class="onboarding-bg-accent-0"
+                      type="checkbox"
+                      name="todo-status"
+                      v-model="todo.isCompleted"
+                      @change="UpdateTodo(todo)"
+                    />
+                    <label :for="`todo-status-${todo.id}`">{{
+                      todo.taskDesc
+                    }}</label>
+                  </div>
+                  <!-- <label for="todo-status">
+                    
+                    {{ todo.taskDesc }}
+                  </label> -->
+                  <!-- <div v-show="false">
+                    <input
+                      id="todo-status"
+                      class="onboarding-bg-accent-0"
+                      type="checkbox"
+                      name="todo-status"
+                      v-model="todo.isCompleted"
+                      @change="UpdateTodo(todo)"
+                    />
+                  </div>
+
                   <q-checkbox
                     v-model="todo.isCompleted"
                     :label="todo.taskDesc"
-                    color="#249990"
-                  />
+                    color="teal"
+                  /> -->
                 </div>
 
                 <div class="onboarding-text-primary col-5 q-pl-lg">
@@ -95,6 +123,16 @@
 <script>
 import TaskItem from "./TaskItem.vue";
 import { ref } from "vue";
+import {
+  Tasks,
+  FetchTasks,
+  FetchTodo,
+  UpdateTodo,
+  FetchTasksWithTodos,
+  SetTasks,
+  GetTasks,
+  TaskDelete,
+} from "../composables/TodoList.js";
 
 export default {
   name: "TaskBoard",
@@ -107,8 +145,25 @@ export default {
   setup() {
     let expanded = ref(false);
 
+    const setTodoAsDone = async (todoId, index) => {
+      await UpdateTodo(todoId, true, index);
+      console.log("set todo as done triggered!");
+      // await FetchTasksWithTodos();
+      // Tasks.value = Tasks.value.map((task) => {
+      //   if(tass)
+      // } )
+    };
+
+    const setTodoAsInProgress = async (todoId, index) => {
+      await UpdateTodo(todoId, false, index);
+      console.log("set todo as in progress triggered!");
+    };
+
     return {
       expanded,
+      setTodoAsDone,
+      UpdateTodo,
+      setTodoAsInProgress,
     };
   },
 };
@@ -139,5 +194,12 @@ export default {
 .action-menu:hover {
   background: #249990;
   color: #fff;
+}
+
+input[type="checkbox"] {
+  accent-color: #249990;
+  margin-right: 5px;
+  height: 16px;
+  width: 16px;
 }
 </style>

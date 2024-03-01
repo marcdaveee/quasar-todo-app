@@ -9,6 +9,8 @@ import axios from "axios";
 import {
   Tasks,
   FetchTasks,
+  FetchTodo,
+  FetchTasksWithTodos,
   SetTasks,
   GetTasks,
   TaskDelete,
@@ -23,15 +25,14 @@ export default {
   },
 
   setup() {
-    let taskList = ref([]);
+    // let taskList = ref([]);
 
     // Fetch Tasks
-
-    // const FetchTasks = async () => {
     onMounted(async () => {
-      await FetchTasks();
+      await FetchTasksWithTodos();
     });
 
+    // Filter Todos that are in-process
     const inProcessTodos = (todos) => {
       const filteredTodos = todos.filter((todo) => {
         return todo.isCompleted == false;
@@ -40,6 +41,7 @@ export default {
       return filteredTodos;
     };
 
+    // Filter Todos that are finished
     const finishedTodos = (todos) => {
       const filteredTodos = todos.filter((todo) => {
         return todo.isCompleted == true;
@@ -51,20 +53,19 @@ export default {
     // watch for any new added todos
     const $q = useQuasar();
 
-    watch(Tasks, (newCountTasks, oldCountTasks) => {
-      if (newCountTasks.length > oldCountTasks.length) {
-        $q.notify({
-          position: "bottom-right",
-          classes: "onboarding-success-notif q-px-lg q-pt-none q-pb-none",
-          color: "accent-0",
-          message: "Successfully Completed Task!",
-          caption: "New To-do List  has been  Added successfully!",
-        });
-        console.log("new todos added!");
-      }
-
-      console.log("new todos added!");
-    });
+    // watch(Tasks, (newCountTasks, oldCountTasks) => {
+    //   if (newCountTasks.length > oldCountTasks.length) {
+    //     $q.notify({
+    //       position: "bottom-right",
+    //       classes: "onboarding-success-notif q-px-lg q-pt-none q-pb-none",
+    //       color: "accent-0",
+    //       message: "Successfully Completed Task!",
+    //       caption: "New To-do List  has been  Added successfully!",
+    //     });
+    //     console.log("new todos added!");
+    //     console.log(Tasks.value.taskTitle);
+    //   }
+    // });
 
     const deleteTask = (id) => {
       // ORNumberDetails.value = id;
