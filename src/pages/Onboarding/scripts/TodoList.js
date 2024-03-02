@@ -3,7 +3,7 @@ import TaskBoard from "../components/TaskBoard.vue";
 import MainDialog from "../../../components/MainDialog.vue";
 import DeleteConfirmation from "../components/DeleteConfirmation.vue";
 import { ToggleMainDialogState } from "../../../composables/Triggers.js";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onBeforeMount, onMounted, ref, watch } from "vue";
 import { useQuasar } from "quasar";
 import axios from "axios";
 import {
@@ -28,7 +28,7 @@ export default {
     // let taskList = ref([]);
 
     // Fetch Tasks
-    onMounted(async () => {
+    onBeforeMount(async () => {
       await FetchTasksWithTodos();
     });
 

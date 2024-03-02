@@ -22,7 +22,7 @@ const FetchTasksWithTodos = async () => {
     .get("http://localhost:3000/tasks?_embed=todos")
     .then((response) => {
       Tasks.value = response.data;
-      console.log(Tasks.value);
+      console.log("Current Tasks Array Value: ", Tasks.value);
     });
 };
 
@@ -44,30 +44,65 @@ const FetchTodo = async (id) => {
 
 const AddTask = async (task) => {
   let taskToAdd = { taskTitle: task.taskTitle, dateCreated: task.dateCreated };
-  let todosToAdd = [];
+  let todosToAdd = task.taskList;
+
   await axios
     .post("http://localhost:3000/tasks", taskToAdd)
-    .then((response) => {
-      console.log(response.data);
-      Tasks.value.push(response.data);
-      task.taskList.forEach((todo) => {
-        todo.taskId = response.data.id;
-        console.log("taskId = ", todo.taskId);
-        console.log("todo = ", todo);
-        todosToAdd.push(AddTodos(todo));
-        // FetchTask(response.data);
-      });
-      let todoIndex = Tasks.value.findIndex(
-        (todo) => todo.id === response.data.taskId
-      );
-      Tasks.value[todoIndex].todos = todosToAdd;
+    .then(async (response) => {
+      taskToAdd.id = response.data.id;
+
+      await AddTodos(todosToAdd, taskToAdd.id);
+
+      // const updatedTaskResponse = await axios.get(
+      //   `http://localhost:3000/tasks/${taskToAdd.id}?_embed=todos`
+      // );
+
+      // const updatedTask = updatedTaskResponse.data;
+
+      // Tasks.value.push(updatedTask);
+      // console.log("Final Updated Task Array: ", Tasks.value);
+
+      // newTodos.push(todo);
+
+      // newTodo = AddTodos(todo);
+
+      // console.log("Current new todos array val: ", newTodos);
+      // todosToAdd.push(AddTodos(todo))
+      // FetchTask(response.data);
+
+      // let todoIndex = Tasks.value.findIndex(
+      //   (todo) => todo.id === response.data.taskId
+      // );
+      // Tasks.value[todoIndex].todos = todosToAdd;
     });
+
+  // console.log("Final New Todos val: ", newTodos);
+  // taskToAdd.todos = newTodos;
 };
 
-const AddTodos = async (todo) => {
-  await axios.post("http://localhost:3000/todos", todo).then((response) => {
-    console.log(response.data);
-    return response.data;
+const AddTodos = async (todos, taskId) => {
+  todos.forEach(async (todo) => {
+    todo.taskId = taskId;
+
+    await axios
+      .post("http://localhost:3000/todos", todo)
+      .then(async (response) => {
+        console.log("Todo Posted: ", response.data);
+      });
+
+    // await axios.post("http://localhost:3000/todos", todo).then((response) => {
+    //   console.log("Posted Todo: ", response.data);
+    //   const newTodo = {
+    //     id: response.data.id,
+    //     taskDesc: response.data.taskDesc,
+    //     time: response.data.time,
+    //     isCompleted: response.data.isCompleted,
+    //     taskId: response.data.taskId,
+    //   };
+
+    //   console.log("New Todo: ", newTodo);
+    //   return newTodo;
+
     // let todoIndex = Tasks.value.findIndex(
     //   (todo) => todo.id === response.data.taskId
     // );
@@ -162,6 +197,7 @@ export {
   UpdateTodo,
   FetchTask,
   AddTask,
+  AddTodos,
   SetTasks,
   GetTasks,
   TaskDelete,

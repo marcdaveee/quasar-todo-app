@@ -7,6 +7,7 @@ import {
   FetchTodo,
   FetchTasksWithTodos,
   AddTask,
+  AddTodos,
   SetTasks,
   GetTasks,
   TaskDelete,
@@ -100,10 +101,17 @@ export default {
     };
 
     // Saving the Task
-    const onSubmit = () => {
+    const onSubmit = async () => {
       if (!route.params.id) {
-        const taskToAdd = taskForm.value;
-        AddTask(taskToAdd);
+        // Task.value.push(taskForm.value);
+
+        // Tasks.value.push(newTask);
+
+        // const taskToAdd = taskForm.value;
+        // Post Task
+        await AddTask(taskForm.value);
+        // Post Todos
+        //
 
         // Todo: AddTodo(), Fetch Task
 
