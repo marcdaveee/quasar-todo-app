@@ -8,8 +8,11 @@ import {
   FetchTasksWithTodos,
   AddTask,
   AddTodos,
+  UpdateTask,
   SetTasks,
   GetTasks,
+  TaskToEdit,
+  RemoveTodos,
   TaskDelete,
 } from "../composables/TodoList.js";
 
@@ -51,11 +54,24 @@ export default {
 
     // If editing a task, the values of the task is displayed in the form
     if (route.params.id) {
-      currentTitle = Tasks.value[route.params.id].taskTitle.value;
-      currentTaskItems = Tasks.value[route.params.id].taskItems.value;
+      // currentTitle = Tasks.value[route.params.id].taskTitle.value;
+      // currentTaskItems = Tasks.value[route.params.id].taskItems.value;
 
-      taskTitle.value = Tasks.value[route.params.id].taskTitle;
-      taskList.value = Tasks.value[route.params.id].taskItems;
+      // taskTitle.value = Tasks.value[route.params.id].taskTitle;
+      // taskList.value = Tasks.value[route.params.id].taskItems;
+
+      const taskToEditId = Tasks.value.findIndex(
+        (task) => task.id == route.params.id
+      );
+
+      console.log("Task to Edit: ", TaskToEdit.value);
+
+      taskForm.value.taskTitle = Tasks.value[taskToEditId].taskTitle;
+      taskForm.value.dateCreated = Tasks.value[taskToEditId].dateCreated;
+      taskForm.value.taskList = Tasks.value[taskToEditId].todos;
+
+      console.log("Todos: ", Tasks.value[taskToEditId].todos);
+      console.log("Form Values: ", taskForm.value);
     }
 
     // get the current number of task/todo items added in the tasks list
@@ -75,7 +91,6 @@ export default {
           taskId: null,
         });
       } else {
-        console.log(taskForm.value.taskList[0].taskDesc);
         if (taskForm.value.taskList[index].taskDesc) {
           // assign id to the inserted item
           // taskList.value[index].id = `${currentId.value}-${index}`;
@@ -92,11 +107,26 @@ export default {
       }
     };
 
+    // Tracks the removed todos during edit
+    let todosToRemove = ref([]);
+
     // called when delete button in the form card is clicked
-    // removes the task/todo item added in the form card
-    const removeKeyResult = (index) => {
-      if (index > -1) {
-        taskForm.value.taskList.splice(index, 1);
+    const removeKeyResult = (id) => {
+      if (route.params.id) {
+        taskForm.value.taskList = taskForm.value.taskList.filter((todoItem) => {
+          if (todoItem.id !== id && id !== null) {
+            return true;
+          } else {
+            todosToRemove.value.push(id);
+            return false;
+          }
+        });
+      } else {
+        let index = id;
+
+        if (index > -1) {
+          taskForm.value.taskList.splice(index, 1);
+        }
       }
     };
 
@@ -108,8 +138,11 @@ export default {
         // Tasks.value.push(newTask);
 
         // const taskToAdd = taskForm.value;
+        const taskToAdd = taskForm.value;
         // Post Task
-        await AddTask(taskForm.value);
+        await AddTask(taskToAdd).then((data) => {
+          console.log("Task Added!: ", data);
+        });
         // Post Todos
         //
 
@@ -122,8 +155,19 @@ export default {
         //   taskItems: taskList,
         // });
       } else {
-        Tasks.value[route.params.id].taskTitle = taskTitle.value;
-        Tasks.value[route.params.id].taskItems = taskList.value;
+        const taskToEditID = route.params.id;
+
+        const taskToUpdate = {
+          id: taskToEditID,
+          taskTitle: taskForm.value.taskTitle,
+          dateCreated: taskForm.value.dateCreated,
+          todos: taskForm.value.taskList,
+        };
+        await UpdateTask(taskToEditID, taskToUpdate, todosToRemove.value);
+
+        if (todosToRemove.value) {
+          await RemoveTodos(todosToRemove.value);
+        }
       }
 
       router.push("/onboarding/menu/todo-list");
@@ -149,6 +193,8 @@ export default {
       cancelEdit,
       addKeyResult,
       removeKeyResult,
+      RemoveTodos,
+      todosToRemove,
     };
   },
 };

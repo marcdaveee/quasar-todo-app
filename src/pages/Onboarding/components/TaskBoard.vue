@@ -73,7 +73,7 @@
                       type="checkbox"
                       name="todo-status"
                       v-model="todo.isCompleted"
-                      @change="UpdateTodo(todo)"
+                      @change="UpdateTodoStatus(todo)"
                     />
                     <label :for="`todo-status-${todo.id}`">{{
                       todo.taskDesc
@@ -127,7 +127,7 @@ import {
   Tasks,
   FetchTasks,
   FetchTodo,
-  UpdateTodo,
+  UpdateTodoStatus,
   FetchTasksWithTodos,
   SetTasks,
   GetTasks,
@@ -162,7 +162,7 @@ export default {
     return {
       expanded,
       setTodoAsDone,
-      UpdateTodo,
+      UpdateTodoStatus,
       setTodoAsInProgress,
     };
   },

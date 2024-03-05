@@ -6,14 +6,21 @@ import { ToggleMainDialogState } from "../../../composables/Triggers.js";
 import { computed, onBeforeMount, onMounted, ref, watch } from "vue";
 import { useQuasar } from "quasar";
 import axios from "axios";
+// import {
+//   Tasks,
+//   FetchTasks,
+//   FetchTodo,
+//   FetchTasksWithTodos,
+//   SetTasks,
+//   GetTasks,
+//   TaskDelete,
+// } from "../composables/TodoList.js";
+
 import {
   Tasks,
-  FetchTasks,
-  FetchTodo,
   FetchTasksWithTodos,
-  SetTasks,
-  GetTasks,
-  TaskDelete,
+  AddTask,
+  UpdateTodo,
 } from "../composables/TodoList.js";
 
 export default {

@@ -51,7 +51,7 @@
 
           <div
             v-for="(taskItem, index) in taskForm.taskList"
-            :key="index"
+            :key="taskItem.id"
             class="onboarding-border-accent-0 onboarding-border-radius-15 q-px-md q-py-md q-mt-lg q-mb-lg fit"
           >
             <div class="top-actions row justify-end q-mb-md">
@@ -60,7 +60,11 @@
                 dense
                 class="action-icons"
                 icon="delete"
-                @click="removeKeyResult(index)"
+                @click="
+                  !$route.params.id
+                    ? removeKeyResult(index)
+                    : removeKeyResult(taskItem.id)
+                "
               />
               <q-btn flat dense class="action-icons" icon="arrow_drop_up" />
             </div>
@@ -73,7 +77,7 @@
 
               <div class="field">
                 <q-input
-                  v-model="taskForm.taskList[index].taskDesc"
+                  v-model="taskItem.taskDesc"
                   dense
                   borderless
                   placeholder="Enter your task..."
@@ -92,7 +96,7 @@
               <q-input
                 dense
                 borderless
-                v-model="taskForm.taskList[index].time"
+                v-model="taskItem.time"
                 hide-bottom-space
                 class="onboarding-input-field onboarding-border-accent-0 onboarding-border-radius-10 onboarding-text-accent-0"
               >
@@ -107,7 +111,7 @@
                       class="onboarding-text-accent-0"
                     >
                       <q-time
-                        v-model="taskForm.taskList[index].time"
+                        v-model="taskItem.time"
                         color="blue"
                         mask="h:mm A"
                         text-color="white"
@@ -119,7 +123,7 @@
                             label="Cancel"
                             color="accent-0"
                             flat
-                            @click="taskForm.taskList[index].time = '00:00 AM'"
+                            @click="taskItem.time = '00:00 AM'"
                           />
                           <q-btn
                             v-close-popup

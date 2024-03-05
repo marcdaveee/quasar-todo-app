@@ -1,204 +1,357 @@
-import { httpGet, httpPost, httpPut, httpDel } from "../../../boot/axios";
+import axios, {
+  httpGet,
+  httpPost,
+  httpPut,
+  httpDel,
+} from "../../../boot/axios";
 import { useQuasar } from "quasar";
 import { ref, readonly } from "vue";
 
-import axios from "axios";
+// import axios from "axios";
 
-let SetTasks = ref();
-let GetTasks = readonly(SetTasks);
-
-let Tasks = ref();
-
-const FetchTasks = async () => {
-  await axios.get("http://localhost:3000/tasks").then((response) => {
-    Tasks.value = response.data;
-    console.log(Tasks.value[0].taskTitle);
-    console.log(Tasks.value[0].todos);
-  });
-};
+let Tasks = ref([]);
 
 const FetchTasksWithTodos = async () => {
-  await axios
-    .get("http://localhost:3000/tasks?_embed=todos")
-    .then((response) => {
-      Tasks.value = response.data;
-      console.log("Current Tasks Array Value: ", Tasks.value);
+  return new Promise((resolve, reject) => {
+    httpGet("tasks?_embed=todos", {
+      success(response) {
+        Tasks.value = response.data;
+        console.log(Tasks.value);
+        resolve(response.data);
+      },
+      catch(response) {
+        reject(response);
+      },
     });
-};
-
-const FetchTask = async (taskId) => {
-  await axios
-    .get(`http://localhost:3000/tasks/${taskId}?_embed=todos`)
-    .then((response) => {
-      return response.data;
-    });
-};
-
-const FetchTodo = async (id) => {
-  await axios.get(`http://localhost:3000/todos/${id}`).then((response) => {
-    console.log(response.data);
-
-    return response.data;
   });
 };
 
 const AddTask = async (task) => {
   let taskToAdd = { taskTitle: task.taskTitle, dateCreated: task.dateCreated };
   let todosToAdd = task.taskList;
+  return new Promise((resolve, reject) => {
+    httpPost("tasks", taskToAdd, {
+      async success(response) {
+        taskToAdd.id = response.data.id;
 
-  await axios
-    .post("http://localhost:3000/tasks", taskToAdd)
-    .then(async (response) => {
-      taskToAdd.id = response.data.id;
+        await AddTodos(todosToAdd, taskToAdd.id);
 
-      await AddTodos(todosToAdd, taskToAdd.id);
-
-      // const updatedTaskResponse = await axios.get(
-      //   `http://localhost:3000/tasks/${taskToAdd.id}?_embed=todos`
-      // );
-
-      // const updatedTask = updatedTaskResponse.data;
-
-      // Tasks.value.push(updatedTask);
-      // console.log("Final Updated Task Array: ", Tasks.value);
-
-      // newTodos.push(todo);
-
-      // newTodo = AddTodos(todo);
-
-      // console.log("Current new todos array val: ", newTodos);
-      // todosToAdd.push(AddTodos(todo))
-      // FetchTask(response.data);
-
-      // let todoIndex = Tasks.value.findIndex(
-      //   (todo) => todo.id === response.data.taskId
-      // );
-      // Tasks.value[todoIndex].todos = todosToAdd;
+        resolve(response.data);
+      },
+      catch(response) {
+        reject(response);
+      },
     });
-
-  // console.log("Final New Todos val: ", newTodos);
-  // taskToAdd.todos = newTodos;
+  });
 };
 
 const AddTodos = async (todos, taskId) => {
   todos.forEach(async (todo) => {
     todo.taskId = taskId;
-
-    await axios
-      .post("http://localhost:3000/todos", todo)
-      .then(async (response) => {
-        console.log("Todo Posted: ", response.data);
+    return new Promise((resolve, reject) => {
+      httpPost("todos", todo, {
+        async success(response) {
+          todo.id = response.data.id;
+          resolve(response.data);
+        },
+        catch(response) {
+          reject(response);
+        },
       });
-
-    // await axios.post("http://localhost:3000/todos", todo).then((response) => {
-    //   console.log("Posted Todo: ", response.data);
-    //   const newTodo = {
-    //     id: response.data.id,
-    //     taskDesc: response.data.taskDesc,
-    //     time: response.data.time,
-    //     isCompleted: response.data.isCompleted,
-    //     taskId: response.data.taskId,
-    //   };
-
-    //   console.log("New Todo: ", newTodo);
-    //   return newTodo;
-
-    // let todoIndex = Tasks.value.findIndex(
-    //   (todo) => todo.id === response.data.taskId
-    // );
-    // console.log("Task Index: ", todoIndex);
-    // Tasks.value[todoIndex].todos.push(response.data);
-    // console.log(Tasks.value[todoIndex].todos);
+    });
   });
 };
 
-const UpdateTodo = async (todo) => {
+const UpdateTodoStatus = async (todo) => {
   console.log("triggered");
-  await axios
-    .patch(`http://localhost:3000/todos/${todo.id}`, {
-      isCompleted: todo.isCompleted,
-    })
-    .then((response) => {
-      console.log("Todo status updated: ", response.data);
-      if (todo.isCompleted) {
-        // ShowNotify(
-        //   "Successfully Completed Task!",
-        //   "To-do List has been Added to Done section successfully!"
-        // );
+  return new Promise((resolve, reject) => {
+    httpPut(
+      `todos/${todo.id}`,
+      { ...todo, isCompleted: todo.isCompleted },
+      {
+        success(response) {
+          todo.id = response.data.id;
+          resolve(response.data);
+        },
+        catch(response) {
+          reject(response);
+        },
+      }
+    );
+  });
+
+  //   await axios
+  //     .patch(`http://localhost:3000/todos/${todo.id}`, {
+  //       isCompleted: todo.isCompleted,
+  //     })
+  //     .then((response) => {
+  //       console.log("Todo status updated: ", response.data);
+  //       if (todo.isCompleted) {
+  //         // ShowNotify(
+  //         //   "Successfully Completed Task!",
+  //         //   "To-do List has been Added to Done section successfully!"
+  //         // );
+  //       } else {
+  //         // ShowNotify(
+  //         //   "Successfully Added Task!",
+  //         //   "To-do List has been Added to In progress section successfully!"
+  //         // );
+  //       }
+  //     });
+};
+
+const UpdateTask = async (taskId, newTaskValue, todosToRemove) => {
+  return new Promise((resolve, reject) => {
+    httpPut(
+      `tasks/${taskId}`,
+      {
+        id: newTaskValue.id,
+        taskTitle: newTaskValue.taskTitle,
+        dateCreated: newTaskValue.dateCreated,
+      },
+      {
+        async success(response) {
+          console.log("Updated Task Info: ", response.data);
+          await UpdateTodos(
+            response.data.id,
+            newTaskValue.todos,
+            todosToRemove
+          );
+          resolve(response.data);
+        },
+        catch(response) {
+          reject(response);
+        },
+      }
+    );
+  });
+};
+
+const UpdateTodos = async (taskId, updatedTodos, todosToRemove) => {
+  return new Promise((resolve, reject) => {
+    updatedTodos.forEach(async (newTodo) => {
+      if (newTodo.id) {
+        await httpPut(`todos/${newTodo.id}`, newTodo, {
+          async success(response) {
+            resolve(response.data);
+          },
+          async catch(response) {
+            reject(response);
+          },
+        });
       } else {
-        // ShowNotify(
-        //   "Successfully Added Task!",
-        //   "To-do List has been Added to In progress section successfully!"
-        // );
+        newTodo.taskId = taskId;
+        await httpPost("todos", newTodo, {
+          async success(response) {
+            resolve(response.data);
+          },
+          async catch(error) {
+            reject(error);
+          },
+        });
       }
     });
-};
 
-const ShowNotify = (message, caption) => {
-  let status = true;
-  const $q = useQuasar();
-  $q.notify({
-    position: $q.screen.width < 767 ? "top" : "bottom-right",
-    classes: `${
-      status ? "onboarding-success-notif" : "onboarding-error-notif"
-    } q-px-lg q-pt-none q-pb-none`,
-    html: true,
-    message: `<div class="text-bold">${message}</div>`,
-    caption: `${caption}`,
+    //   httpGet("todos?taskId=todos", {
+    //     async success(response) {
+    //       const todosToUpdate = response.data;
+    //       todosToUpdate.map(async (todo, index) => {
+    //         httpPut(
+    //           `todos/${todo.id}`,
+    //           {
+    //             taskId: taskId,
+    //             taskDesc: updatedTodos[index].taskDesc,
+    //             time: updatedTodos[index].time,
+    //           },
+    //           {
+    //             async success(response) {
+    //               console.log("Updated Todos Info: ", response.data);
+    //               resolve(response.data);
+    //             },
+    //             catch(response) {
+    //               reject(response);
+    //             },
+    //           }
+    //         );
+    //       });
+    //       resolve(response.data);
+    //     },
+    //     catch(response) {
+    //       reject(response);
+    //     },
+    //   });
   });
 };
-// const UpdateTodo = async (todoId, todoStatus, todoIndex) => {
-//   await axios
-//     .patch(`http://localhost:3000/todos/${todoId}`, {
-//       isCompleted: todoStatus,
-//     })
-//     .then((response) => {
-//       // Tasks.value.map((task) => {
-//       console.log("Current Task ID: ", task.id);
-//       console.log("Response ID: ", response.data.id);
-//   if (task.id == response.data.taskId) {
-//     console.log(task.todos[todoIndex].isCompleted);
-//     task.todos[todoIndex].isCompleted = response.data.isCompleted;
-//     console.log(task.todos[todoIndex].isCompleted);
-//   }
-// });
-// console.log("Index", todoIndex);
-// console.log(Tasks.value.todos[todoIndex].isCompleted);
-// Tasks.value.todos[todoIndex].isCompleted = response.data.isCompleted;
-// console.log(Tasks.value.todos[todoIndex].isCompleted);
-// Tasks.value = Tasks.value.map((task) => {
-//   console.log("Current Task ID: ", task.id);
-//   console.log("Response ID: ", response.data.id);
-//   if (task.id == response.data.taskId) {
-//     console.log("Id Matched!");
-//     console.log(task.id);
-//     task.todos.map((todo) => {
-//       if (todo.id == response.data.id) {
-//         console.log(todo.isCompleted);
-//         todo.isCompleted = todoStatus;
-//         console.log(todo.isCompleted);
-//         console.log("Updated");
-//       }
-//     });
-//   }
-// });
-//       console.log(response.data);
-//     })
-//     .catch((err) => console.log(err));
-// };
+
+const RemoveTodos = async (todosToRemove) => {
+  console.log("Todos to Remove: ", todosToRemove);
+
+  // const promises = todosToRemove.forEach(async (todo) => {
+  //   await RemoveTodo(todo).then((data) => {
+  //     console.log("Todo was Removed: ", data);
+  //   });
+  // });
+
+  for (const todo of todosToRemove) {
+    try {
+      console.log("Todo ID to Remove: ", todo);
+      await RemoveTodo(todo);
+      console.log("Todo was Removed: ", todo);
+    } catch (error) {
+      console.error("Error removing todo:", error);
+    }
+  }
+};
+
+const RemoveTodo = async (todoToRemove) => {
+  return new Promise(async (resolve, reject) => {
+    console.log("Todo ID to Remove inside Remove Todo: ", todoToRemove);
+    await httpDel(
+      `todos/${todoToRemove}`,
+      { id: todoToRemove },
+      {
+        success(response) {
+          console.log("Todo Removed: ", response.data);
+          resolve(response.data);
+        },
+        catch(response) {
+          console.log("error removing Todo: ", response);
+          reject(response);
+        },
+      }
+    );
+  });
+};
+
+let TaskToEdit = ref(null);
 
 let TaskDelete = ref(null);
 
 export {
   Tasks,
-  FetchTasks,
   FetchTasksWithTodos,
-  FetchTodo,
-  UpdateTodo,
-  FetchTask,
   AddTask,
-  AddTodos,
-  SetTasks,
-  GetTasks,
+  UpdateTodoStatus,
+  UpdateTodos,
+  UpdateTask,
+  TaskToEdit,
+  RemoveTodos,
   TaskDelete,
 };
+
+// ----------------------------- Working API Request ---------------------------------
+
+// let SetTasks = ref();
+// let GetTasks = readonly(SetTasks);
+
+// let Tasks = ref();
+
+// const FetchTasks = async () => {
+//   await axios.get("http://localhost:3000/tasks").then((response) => {
+//     Tasks.value = response.data;
+//     console.log(Tasks.value[0].taskTitle);
+//     console.log(Tasks.value[0].todos);
+//   });
+// };
+
+// const FetchTasksWithTodos = async () => {
+//   await axios
+//     .get("http://localhost:3000/tasks?_embed=todos")
+//     .then((response) => {
+//       Tasks.value = response.data;
+//       console.log("Current Tasks Array Value: ", Tasks.value);
+//     });
+// };
+
+// const FetchTask = async (taskId) => {
+//   await axios
+//     .get(`http://localhost:3000/tasks/${taskId}?_embed=todos`)
+//     .then((response) => {
+//       return response.data;
+//     });
+// };
+
+// const FetchTodo = async (id) => {
+//   await axios.get(`http://localhost:3000/todos/${id}`).then((response) => {
+//     console.log(response.data);
+
+//     return response.data;
+//   });
+// };
+
+// const AddTask = async (task) => {
+//   let taskToAdd = { taskTitle: task.taskTitle, dateCreated: task.dateCreated };
+//   let todosToAdd = task.taskList;
+
+//   await axios
+//     .post("http://localhost:3000/tasks", taskToAdd)
+//     .then(async (response) => {
+//       taskToAdd.id = response.data.id;
+
+//       await AddTodos(todosToAdd, taskToAdd.id);
+//     });
+// };
+
+// const AddTodos = async (todos, taskId) => {
+//   todos.forEach(async (todo) => {
+//     todo.taskId = taskId;
+
+//     await axios
+//       .post("http://localhost:3000/todos", todo)
+//       .then(async (response) => {
+//         console.log("Todo Posted: ", response.data);
+//       });
+//   });
+// };
+
+// const UpdateTodo = async (todo) => {
+//   console.log("triggered");
+//   await axios
+//     .patch(`http://localhost:3000/todos/${todo.id}`, {
+//       isCompleted: todo.isCompleted,
+//     })
+//     .then((response) => {
+//       console.log("Todo status updated: ", response.data);
+//       if (todo.isCompleted) {
+//         // ShowNotify(
+//         //   "Successfully Completed Task!",
+//         //   "To-do List has been Added to Done section successfully!"
+//         // );
+//       } else {
+//         // ShowNotify(
+//         //   "Successfully Added Task!",
+//         //   "To-do List has been Added to In progress section successfully!"
+//         // );
+//       }
+//     });
+// };
+
+// const ShowNotify = (message, caption) => {
+//   let status = true;
+//   const $q = useQuasar();
+//   $q.notify({
+//     position: $q.screen.width < 767 ? "top" : "bottom-right",
+//     classes: `${
+//       status ? "onboarding-success-notif" : "onboarding-error-notif"
+//     } q-px-lg q-pt-none q-pb-none`,
+//     html: true,
+//     message: `<div class="text-bold">${message}</div>`,
+//     caption: `${caption}`,
+//   });
+// };
+
+// let TaskDelete = ref(null);
+
+// export {
+//   Tasks,
+//   FetchTasks,
+//   FetchTasksWithTodos,
+//   FetchTodo,
+//   UpdateTodo,
+//   FetchTask,
+//   AddTask,
+//   AddTodos,
+//   SetTasks,
+//   GetTasks,
+//   TaskDelete,
+// };

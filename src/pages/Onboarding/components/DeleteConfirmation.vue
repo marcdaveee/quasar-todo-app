@@ -2,7 +2,7 @@
 import { useQuasar } from "quasar";
 import { ref } from "vue";
 import { ToggleMainDialogState } from "../../../composables/Triggers";
-import { Tasks, GetTasks, TaskDelete } from "../composables/TodoList.js";
+import { Tasks, TaskDelete } from "../composables/TodoList.js";
 // import { ORNumberDetails, DeleteORRange } from "../../../composables/ORNumber";
 
 const $q = useQuasar();
