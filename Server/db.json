@@ -11,12 +11,6 @@
       "taskTitle": "IT Accomplishment Report",
       "dateCreated": "February 28, 2024",
       "isExpanded": true
-    },
-    {
-      "id": 6,
-      "taskTitle": "Test Editing this Task with todos",
-      "dateCreated": "March 06, 2024",
-      "isExpanded": true
     }
   ],
   "todos": [
@@ -61,20 +55,6 @@
       "isCompleted": true,
       "taskId": 1,
       "id": 68
-    },
-    {
-      "taskDesc": "test todo ten",
-      "time": "10:00 AM",
-      "isCompleted": false,
-      "taskId": 6,
-      "id": 100
-    },
-    {
-      "taskDesc": "test todo eleven",
-      "time": "11:00 PM",
-      "isCompleted": false,
-      "taskId": 6,
-      "id": 101
     },
     {
       "taskDesc": "Submit to QA",
