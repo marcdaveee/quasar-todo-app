@@ -20,6 +20,7 @@ import {
   Tasks,
   FetchTasksWithTodos,
   AddTask,
+  TaskToDelete,
   UpdateTodo,
 } from "../composables/TodoList.js";
 
@@ -77,7 +78,7 @@ export default {
     const deleteTask = (id) => {
       // ORNumberDetails.value = id;
       console.log("id to delete: ", id);
-      TaskDelete.value = id;
+      TaskToDelete.value = id;
       ToggleMainDialogState();
     };
 

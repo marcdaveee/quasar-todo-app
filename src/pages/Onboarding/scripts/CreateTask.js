@@ -169,7 +169,6 @@ export default {
           await RemoveTodos(todosToRemove.value);
         }
       }
-
       router.push("/onboarding/menu/todo-list");
     };
 

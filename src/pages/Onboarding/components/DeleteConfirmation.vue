@@ -2,7 +2,12 @@
 import { useQuasar } from "quasar";
 import { ref } from "vue";
 import { ToggleMainDialogState } from "../../../composables/Triggers";
-import { Tasks, TaskDelete } from "../composables/TodoList.js";
+import {
+  Tasks,
+  TaskToDelete,
+  RemoveTask,
+  RemoveTodos,
+} from "../composables/TodoList.js";
 // import { ORNumberDetails, DeleteORRange } from "../../../composables/ORNumber";
 
 const $q = useQuasar();
@@ -10,8 +15,13 @@ const closeDialog = () => {
   ToggleMainDialogState();
 };
 
-const deleteTask = () => {
-  Tasks.value = Tasks.value.filter((todo) => todo.id != TaskDelete.value);
+const deleteTask = async () => {
+  Tasks.value = Tasks.value.filter((task) => task.id != TaskToDelete.value);
+
+  await RemoveTask(TaskToDelete.value);
+
+  TaskToDelete.value = "";
+
   ToggleMainDialogState();
 };
 </script>

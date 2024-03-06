@@ -186,12 +186,6 @@ const UpdateTodos = async (taskId, updatedTodos, todosToRemove) => {
 const RemoveTodos = async (todosToRemove) => {
   console.log("Todos to Remove: ", todosToRemove);
 
-  // const promises = todosToRemove.forEach(async (todo) => {
-  //   await RemoveTodo(todo).then((data) => {
-  //     console.log("Todo was Removed: ", data);
-  //   });
-  // });
-
   for (const todo of todosToRemove) {
     try {
       console.log("Todo ID to Remove: ", todo);
@@ -223,9 +217,29 @@ const RemoveTodo = async (todoToRemove) => {
   });
 };
 
+const RemoveTask = (taskId) => {
+  return new Promise(async (resolve, reject) => {
+    console.log("Task to Remove: ", taskId);
+    await httpDel(
+      `tasks/${taskId}`,
+      { id: taskId },
+      {
+        success(response) {
+          console.log("Task Removed: ", response.data);
+          resolve(response.data);
+        },
+        catch(response) {
+          console.log("error removing Task: ", response);
+          reject(response);
+        },
+      }
+    );
+  });
+};
+
 let TaskToEdit = ref(null);
 
-let TaskDelete = ref(null);
+let TaskToDelete = ref(null);
 
 export {
   Tasks,
@@ -235,8 +249,9 @@ export {
   UpdateTodos,
   UpdateTask,
   TaskToEdit,
+  RemoveTask,
   RemoveTodos,
-  TaskDelete,
+  TaskToDelete,
 };
 
 // ----------------------------- Working API Request ---------------------------------

@@ -11,19 +11,9 @@
       "dateCreated": "February 28, 2024"
     },
     {
-      "id": 3,
-      "taskTitle": "Leave coffee shop",
-      "dateCreated": "March 04, 2024"
-    },
-    {
-      "id": 4,
-      "taskTitle": "Edit this Task with Todosss",
-      "dateCreated": "March 04, 2024"
-    },
-    {
-      "id": 5,
-      "taskTitle": "Test Todos Create again",
-      "dateCreated": "March 04, 2024"
+      "id": 6,
+      "taskTitle": "Test Editing this Task",
+      "dateCreated": "March 06, 2024"
     }
   ],
   "todos": [
@@ -56,13 +46,6 @@
       "taskId": 2
     },
     {
-      "taskDesc": "Resolve errors",
-      "time": "11:00 AM",
-      "isCompleted": false,
-      "taskId": 1,
-      "id": 13
-    },
-    {
       "taskDesc": "Submit AR",
       "time": "10:00 AM",
       "isCompleted": false,
@@ -70,46 +53,46 @@
       "id": 14
     },
     {
-      "taskDesc": "Request for the signature of the supervisor",
-      "time": "1:00 AM",
-      "isCompleted": false,
-      "taskId": 3,
-      "id": 20
+      "taskDesc": "Remove Todos Method",
+      "time": "5:00 PM",
+      "isCompleted": true,
+      "taskId": 1,
+      "id": 68
     },
     {
-      "taskDesc": "Resolve bugs",
-      "time": "2:00 AM",
+      "taskDesc": "Test functionality in case of bugs",
+      "time": "7:00 PM",
       "isCompleted": false,
-      "taskId": 3,
-      "id": 21
+      "taskId": 1,
+      "id": 69
     },
     {
-      "taskDesc": "Configure Delete methods",
-      "time": "9:00 AM",
+      "taskDesc": "Track whether taskBoard is expanded or not",
+      "time": "8:00 PM",
       "isCompleted": false,
-      "taskId": 5,
-      "id": 43
+      "taskId": 1,
+      "id": 70
     },
     {
-      "taskDesc": "Test todo Eight",
-      "time": "8:40 AM",
+      "taskDesc": "test todo five",
+      "time": "5:00 AM",
       "isCompleted": false,
-      "taskId": 4,
-      "id": 65
+      "taskId": 6,
+      "id": 91
     },
     {
-      "taskDesc": "Check for bugs",
-      "time": "4:05 PM",
+      "taskDesc": "test todo seven",
+      "time": "7:00 AM",
       "isCompleted": false,
-      "taskId": 5,
-      "id": 66
+      "taskId": 6,
+      "id": 92
     },
     {
-      "taskDesc": "Test todo Nine",
-      "time": "9:00 PM",
+      "taskDesc": "test todo eight",
+      "time": "8:00 AM",
       "isCompleted": false,
-      "taskId": 4,
-      "id": 67
+      "taskId": 6,
+      "id": 93
     }
   ]
 }

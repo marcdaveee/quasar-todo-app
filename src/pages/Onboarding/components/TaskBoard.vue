@@ -66,7 +66,7 @@
               <!-- <TaskItem/> -->
               <div class="row onboarding-text-secondary items-center fit">
                 <div class="col-6 onboarding-text-primary">
-                  <div class="row items-center q-mb-sm">
+                  <div class="row justify-start items-center q-mb-sm">
                     <input
                       :id="`todo-status-${todo.id}`"
                       class="onboarding-bg-accent-0"
@@ -75,9 +75,12 @@
                       v-model="todo.isCompleted"
                       @change="UpdateTodoStatus(todo)"
                     />
-                    <label :for="`todo-status-${todo.id}`">{{
-                      todo.taskDesc
-                    }}</label>
+
+                    <div>
+                      <label :for="`todo-status-${todo.id}`">{{
+                        todo.taskDesc
+                      }}</label>
+                    </div>
                   </div>
                   <!-- <label for="todo-status">
                     
@@ -189,6 +192,10 @@ export default {
 .status-header {
   padding: 10px 24px;
   border-radius: 16px 16px 0 0;
+}
+
+label {
+  cursor: pointer;
 }
 
 .action-menu:hover {
