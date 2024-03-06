@@ -1,51 +1,56 @@
 <template>
   <div class="container">
     <div class="login">
-      <div class="title">Log in</div>
+      <div class="title text-center q-mb-lg">Log in</div>
       <!---Form-->
-      <div>
+      <div class="q-mb-md">
+        <q-item-label class="label key_result text-weight-bold q-mb-sm"
+          >Username:
+          <span class="required">*</span>
+        </q-item-label>
+
+        <!-- v-model="taskTitle" -->
         <q-input
-          rounded
-          borderless
-          v-model="text"
           :dense="dense"
-          label="Username"
-          label-color="white"
-          class="uname"
-        >
-          <template v-slot:prepend>
-            <q-icon name="person" color="white" />
-          </template>
-        </q-input>
+          rounded
+          v-model="text"
+          borderless
+          placeholder="Enter Username"
+          :rules="[(val) => (val !== null && val !== '') || '']"
+          hide-bottom-space
+          class="onboarding-input-field standard onboarding-border-accent-0 onboarding-border-radius-10 fit"
+        />
       </div>
       <div>
+        <q-item-label class="label key_result text-weight-bold q-mb-sm"
+          >Password:
+          <span class="required">*</span>
+        </q-item-label>
         <q-input
+          :dense="dense"
           rounded
-          borderless
           v-model="password"
           :type="isPwd ? 'password' : 'text'"
-          :dense="dense"
-          label="Password"
-          label-color="white"
-          class="pword"
-          color="white"
-        >
-          <template v-slot:prepend>
-            <q-icon name="lock_open" color="white" />
-          </template>
-        </q-input>
+          borderless
+          placeholder="Enter Password"
+          :rules="[(val) => (val !== null && val !== '') || '']"
+          hide-bottom-space
+          class="onboarding-input-field standard onboarding-border-accent-0 onboarding-border-radius-10 fit"
+        />
       </div>
-      <div class="forgot">
-        <q-btn flat unelevated class="forgotbtn">Forgot Password?</q-btn>
-      </div>
+
       <div>
         <q-btn
           unelevated
           rounded
-          label="Login"
+          label="Log in"
           class="loginbtn"
           :to="{ name: 'dashboard' }"
         />
+      </div>
+
+      <div class="text-center q-mt-lg">
+        <q-btn flat unelevated class="forgotbtn">Forgot Password?</q-btn>
       </div>
     </div>
   </div>
@@ -68,7 +73,7 @@ export default {
 <style lang="scss" scope>
 //Desktop
 .container {
-  background-color: rgba(37, 44, 62, 1);
+  background-color: #fff;
   width: 100%;
   height: 100%;
   justify-content: center;
@@ -76,13 +81,13 @@ export default {
   align-items: center;
   position: fixed;
   .title {
-    color: white;
+    color: #212121;
     font-family: "Source Sans Pro";
     font-weight: 700;
-
+    text-transform: uppercase;
     min-height: 34px;
     min-width: 58px;
-    font-size: 32px;
+    font-size: 64px;
     white-space: nowrap;
   }
   .uname,
@@ -113,9 +118,13 @@ export default {
     text-transform: capitalize;
   }
 
+  .required {
+    color: #ff0000;
+  }
+
   .loginbtn {
     border-radius: 30px;
-    background-color: #e0384a;
+    background-color: #249990;
     font-family: "Source Sans Pro";
     font-size: 20px;
     font-weight: 400; // regular
@@ -125,11 +134,11 @@ export default {
     padding: 2px 83px;
     height: 55px;
     font-weight: bold;
-    margin-top: 123px;
+    margin-top: 24px;
     margin-left: auto;
     margin-right: auto;
     display: flex;
-    width: 320px;
+    width: 450px;
   }
 }
 //Mobile
