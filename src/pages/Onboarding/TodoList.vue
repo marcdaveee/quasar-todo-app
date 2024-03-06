@@ -40,6 +40,8 @@
           :todoList="inProcessTodos(todo.todos)"
           :dateCreated="todo.dateCreated"
           :taskId="todo.id"
+          :isExpanded="todo.isExpanded"
+          @expand-item="expandItem"
           @delete-task="deleteTask"
           class="col q-mr-lg"
         />
@@ -50,6 +52,8 @@
           :taskTitle="todo.taskTitle"
           :todoList="finishedTodos(todo.todos)"
           :dateCreated="todo.dateCreated"
+          :isExpanded="todo.isExpanded"
+          @expand-item="expandItem"
           @delete-task="deleteTask(index)"
           class="col"
         />

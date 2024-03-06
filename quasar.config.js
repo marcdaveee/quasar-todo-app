@@ -89,7 +89,6 @@ module.exports = configure(function (ctx) {
           type: String,
           message: String,
           color: String,
-          message: String,
           caption: String,
           position: String,
           classes: String,
@@ -97,6 +96,8 @@ module.exports = configure(function (ctx) {
           html: Boolean,
         },
       },
+
+      plugins: ["Notify"],
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
@@ -109,7 +110,6 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ["Notify"],
     },
 
     // animations: 'all', // --- includes all animations

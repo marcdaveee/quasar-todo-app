@@ -8,7 +8,7 @@
       {{ status }}
     </div>
 
-    <div class="task-board" :class="expanded ? 'expanded' : ''">
+    <div class="task-board" :class="isExpanded ? 'expanded' : ''">
       <!-- Contents inside the board -->
       <div class="row justify-between items-center">
         <div class="text-bold onboarding-text-secondary text-20">
@@ -16,7 +16,7 @@
         </div>
 
         <div class="row items-center">
-          <div v-if="expanded">
+          <div v-if="isExpanded">
             <q-btn dense flat icon="more_horiz" v-show="status !== 'Done'">
               <q-menu fit anchor="bottom right" self="top right">
                 <q-list style="min-width: 180px">
@@ -48,15 +48,15 @@
             <q-btn
               dense
               flat
-              :icon="expanded ? 'keyboard_arrow_down' : 'keyboard_arrow_up'"
-              @click="expanded = !expanded"
+              :icon="isExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_up'"
+              @click="$emit('expand-item', taskId)"
             />
           </div>
         </div>
       </div>
-
+      <!-- @click="expanded = !expanded" -->
       <q-slide-transition>
-        <div v-show="expanded">
+        <div v-show="isExpanded">
           <q-card-section>
             <div
               v-for="todo in todoList"
@@ -112,7 +112,7 @@
           </q-card-section>
 
           <div
-            v-show="expanded"
+            v-show="isExpanded"
             class="row justify-end bottom-content text-bold onboarding-text-secondary text-20"
           >
             {{ dateCreated }}
@@ -126,6 +126,7 @@
 <script>
 import TaskItem from "./TaskItem.vue";
 import { ref } from "vue";
+import { useQuasar } from "quasar";
 import {
   Tasks,
   FetchTasks,
@@ -142,7 +143,14 @@ export default {
   components: {
     TaskItem,
   },
-  props: ["status", "taskId", "taskTitle", "todoList", "dateCreated"],
+  props: [
+    "status",
+    "taskId",
+    "taskTitle",
+    "todoList",
+    "dateCreated",
+    "isExpanded",
+  ],
   emits: ["delete-task"],
 
   setup() {
@@ -151,14 +159,11 @@ export default {
     const setTodoAsDone = async (todoId, index) => {
       await UpdateTodo(todoId, true, index);
       console.log("set todo as done triggered!");
-      // await FetchTasksWithTodos();
-      // Tasks.value = Tasks.value.map((task) => {
-      //   if(tass)
-      // } )
     };
 
     const setTodoAsInProgress = async (todoId, index) => {
       await UpdateTodo(todoId, false, index);
+      ShowNotify();
       console.log("set todo as in progress triggered!");
     };
 

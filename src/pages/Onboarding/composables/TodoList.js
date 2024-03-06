@@ -4,18 +4,20 @@ import axios, {
   httpPut,
   httpDel,
 } from "../../../boot/axios";
-import { useQuasar } from "quasar";
+
 import { ref, readonly } from "vue";
+import { useQuasar } from "quasar";
 
-// import axios from "axios";
-
+// Local store for Tasks
 let Tasks = ref([]);
 
+// Fetch Tasks from the JSON Server/Database
 const FetchTasksWithTodos = async () => {
   return new Promise((resolve, reject) => {
     httpGet("tasks?_embed=todos", {
       success(response) {
         Tasks.value = response.data;
+        Tasks.value.isExpanded = false;
         console.log(Tasks.value);
         resolve(response.data);
       },
@@ -26,6 +28,7 @@ const FetchTasksWithTodos = async () => {
   });
 };
 
+// Post Task to the JSON server
 const AddTask = async (task) => {
   let taskToAdd = { taskTitle: task.taskTitle, dateCreated: task.dateCreated };
   let todosToAdd = task.taskList;
@@ -45,6 +48,7 @@ const AddTask = async (task) => {
   });
 };
 
+// Post Todos to the JSON server
 const AddTodos = async (todos, taskId) => {
   todos.forEach(async (todo) => {
     todo.taskId = taskId;
@@ -62,8 +66,8 @@ const AddTodos = async (todos, taskId) => {
   });
 };
 
+// Update todo item's status (in-progress or done) in the JSON Server
 const UpdateTodoStatus = async (todo) => {
-  console.log("triggered");
   return new Promise((resolve, reject) => {
     httpPut(
       `todos/${todo.id}`,
@@ -79,27 +83,33 @@ const UpdateTodoStatus = async (todo) => {
       }
     );
   });
-
-  //   await axios
-  //     .patch(`http://localhost:3000/todos/${todo.id}`, {
-  //       isCompleted: todo.isCompleted,
-  //     })
-  //     .then((response) => {
-  //       console.log("Todo status updated: ", response.data);
-  //       if (todo.isCompleted) {
-  //         // ShowNotify(
-  //         //   "Successfully Completed Task!",
-  //         //   "To-do List has been Added to Done section successfully!"
-  //         // );
-  //       } else {
-  //         // ShowNotify(
-  //         //   "Successfully Added Task!",
-  //         //   "To-do List has been Added to In progress section successfully!"
-  //         // );
-  //       }
-  //     });
 };
 
+// Update whether a task item is expanded or not
+const UpdateTaskState = (task) => {
+  return new Promise((resolve, reject) => {
+    httpPut(
+      `tasks/${task.id}`,
+      {
+        id: task.id,
+        taskTitle: task.taskTitle,
+        dateCreated: task.dateCreated,
+        isExpanded: task.isExpanded,
+      },
+      {
+        async success(response) {
+          console.log("Updated Task Info: ", response.data);
+          resolve(response.data);
+        },
+        catch(response) {
+          reject(response);
+        },
+      }
+    );
+  });
+};
+
+// Update a Task object in the JSON Server
 const UpdateTask = async (taskId, newTaskValue, todosToRemove) => {
   return new Promise((resolve, reject) => {
     httpPut(
@@ -108,6 +118,7 @@ const UpdateTask = async (taskId, newTaskValue, todosToRemove) => {
         id: newTaskValue.id,
         taskTitle: newTaskValue.taskTitle,
         dateCreated: newTaskValue.dateCreated,
+        isExpanded: newTaskValue.isExpanded,
       },
       {
         async success(response) {
@@ -127,6 +138,7 @@ const UpdateTask = async (taskId, newTaskValue, todosToRemove) => {
   });
 };
 
+// Update Todos in the JSON Server
 const UpdateTodos = async (taskId, updatedTodos, todosToRemove) => {
   return new Promise((resolve, reject) => {
     updatedTodos.forEach(async (newTodo) => {
@@ -151,38 +163,10 @@ const UpdateTodos = async (taskId, updatedTodos, todosToRemove) => {
         });
       }
     });
-
-    //   httpGet("todos?taskId=todos", {
-    //     async success(response) {
-    //       const todosToUpdate = response.data;
-    //       todosToUpdate.map(async (todo, index) => {
-    //         httpPut(
-    //           `todos/${todo.id}`,
-    //           {
-    //             taskId: taskId,
-    //             taskDesc: updatedTodos[index].taskDesc,
-    //             time: updatedTodos[index].time,
-    //           },
-    //           {
-    //             async success(response) {
-    //               console.log("Updated Todos Info: ", response.data);
-    //               resolve(response.data);
-    //             },
-    //             catch(response) {
-    //               reject(response);
-    //             },
-    //           }
-    //         );
-    //       });
-    //       resolve(response.data);
-    //     },
-    //     catch(response) {
-    //       reject(response);
-    //     },
-    //   });
   });
 };
 
+// Remove todos from the JSON Server
 const RemoveTodos = async (todosToRemove) => {
   console.log("Todos to Remove: ", todosToRemove);
 
@@ -197,6 +181,7 @@ const RemoveTodos = async (todosToRemove) => {
   }
 };
 
+// Remove a todo object from the JSON Server
 const RemoveTodo = async (todoToRemove) => {
   return new Promise(async (resolve, reject) => {
     console.log("Todo ID to Remove inside Remove Todo: ", todoToRemove);
@@ -216,6 +201,8 @@ const RemoveTodo = async (todoToRemove) => {
     );
   });
 };
+
+// Remove or Delete a task from the server
 
 const RemoveTask = (taskId) => {
   return new Promise(async (resolve, reject) => {
@@ -237,6 +224,20 @@ const RemoveTask = (taskId) => {
   });
 };
 
+const ShowNotify = (message, caption) => {
+  let status = true;
+  const $q = useQuasar();
+  $q.notify({
+    position: $q.screen.width < 767 ? "top" : "bottom-right",
+    classes: `${
+      status ? "onboarding-success-notif" : "onboarding-error-notif"
+    } q-px-lg q-pt-none q-pb-none`,
+    html: true,
+    message: `<div class="text-bold">${message}</div>`,
+    caption: `${caption}`,
+  });
+};
+
 let TaskToEdit = ref(null);
 
 let TaskToDelete = ref(null);
@@ -248,13 +249,15 @@ export {
   UpdateTodoStatus,
   UpdateTodos,
   UpdateTask,
+  UpdateTaskState,
   TaskToEdit,
   RemoveTask,
   RemoveTodos,
   TaskToDelete,
+  ShowNotify,
 };
 
-// ----------------------------- Working API Request ---------------------------------
+// ----------------------------- Alternative Working API Request ---------------------------------
 
 // let SetTasks = ref();
 // let GetTasks = readonly(SetTasks);

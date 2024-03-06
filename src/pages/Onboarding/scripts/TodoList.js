@@ -22,6 +22,7 @@ import {
   AddTask,
   TaskToDelete,
   UpdateTodo,
+  UpdateTaskState,
 } from "../composables/TodoList.js";
 
 export default {
@@ -59,7 +60,7 @@ export default {
     };
 
     // watch for any new added todos
-    const $q = useQuasar();
+    // const $q = useQuasar();
 
     // watch(Tasks, (newCountTasks, oldCountTasks) => {
     //   if (newCountTasks.length > oldCountTasks.length) {
@@ -80,6 +81,13 @@ export default {
       console.log("id to delete: ", id);
       TaskToDelete.value = id;
       ToggleMainDialogState();
+    };
+
+    const expandItem = async (id) => {
+      const taskIndex = Tasks.value.findIndex((task) => task.id == id);
+      Tasks.value[taskIndex].isExpanded = !Tasks.value[taskIndex].isExpanded;
+
+      await UpdateTaskState(Tasks.value[taskIndex]);
     };
 
     // watch(Todos.value.taskItems, (todos) => {
@@ -119,6 +127,7 @@ export default {
       Filters,
       Tasks,
       deleteTask,
+      expandItem,
       inProcessTodos,
       finishedTodos,
     };

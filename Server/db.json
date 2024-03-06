@@ -3,17 +3,20 @@
     {
       "id": 1,
       "taskTitle": "Final Onboarding Task",
-      "dateCreated": "February 28, 2024"
+      "dateCreated": "February 28, 2024",
+      "isExpanded": true
     },
     {
       "id": 2,
-      "taskTitle": "IT Practicuum Accomplishment Report",
-      "dateCreated": "February 28, 2024"
+      "taskTitle": "IT Accomplishment Report",
+      "dateCreated": "February 28, 2024",
+      "isExpanded": true
     },
     {
       "id": 6,
-      "taskTitle": "Test Editing this Task",
-      "dateCreated": "March 06, 2024"
+      "taskTitle": "Test Editing this Task with todos",
+      "dateCreated": "March 06, 2024",
+      "isExpanded": true
     }
   ],
   "todos": [
@@ -28,14 +31,14 @@
       "id": 2,
       "taskDesc": "Delete Method with JSON Server",
       "time": "10:30 AM",
-      "isCompleted": false,
+      "isCompleted": true,
       "taskId": 1
     },
     {
       "id": 3,
       "taskDesc": "Download Template from Canvas",
       "time": "8:00 AM",
-      "isCompleted": true,
+      "isCompleted": false,
       "taskId": 2
     },
     {
@@ -48,7 +51,7 @@
     {
       "taskDesc": "Submit AR",
       "time": "10:00 AM",
-      "isCompleted": false,
+      "isCompleted": true,
       "taskId": 2,
       "id": 14
     },
@@ -60,39 +63,32 @@
       "id": 68
     },
     {
-      "taskDesc": "Test functionality in case of bugs",
-      "time": "7:00 PM",
+      "taskDesc": "test todo ten",
+      "time": "10:00 AM",
+      "isCompleted": false,
+      "taskId": 6,
+      "id": 100
+    },
+    {
+      "taskDesc": "test todo eleven",
+      "time": "11:00 PM",
+      "isCompleted": false,
+      "taskId": 6,
+      "id": 101
+    },
+    {
+      "taskDesc": "Submit to QA",
+      "time": "4:45 PM",
       "isCompleted": false,
       "taskId": 1,
-      "id": 69
+      "id": 102
     },
     {
-      "taskDesc": "Track whether taskBoard is expanded or not",
-      "time": "8:00 PM",
+      "taskDesc": "Add notification",
+      "time": "4:00 PM",
       "isCompleted": false,
       "taskId": 1,
-      "id": 70
-    },
-    {
-      "taskDesc": "test todo five",
-      "time": "5:00 AM",
-      "isCompleted": false,
-      "taskId": 6,
-      "id": 91
-    },
-    {
-      "taskDesc": "test todo seven",
-      "time": "7:00 AM",
-      "isCompleted": false,
-      "taskId": 6,
-      "id": 92
-    },
-    {
-      "taskDesc": "test todo eight",
-      "time": "8:00 AM",
-      "isCompleted": false,
-      "taskId": 6,
-      "id": 93
+      "id": 103
     }
   ]
 }
